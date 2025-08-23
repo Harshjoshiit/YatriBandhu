@@ -1,0 +1,348 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; display: flex; align-items: center; justify-content: center; }
+.container { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); max-width: 550px; width: 100%; text-align: center; margin-bottom: 20px; }
+.header { margin-bottom: 25px; } /* Added spacing */
+.header h2 { color: #333; font-size: 2rem; margin-bottom: 10px; background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header p { color: #666; font-size: 1rem; }
+
+/* Auth Form Styles */
+.auth-container { max-width: 400px; margin: 0 auto; }
+.auth-form { display: flex; flex-direction: column; gap: 15px; }
+.auth-form input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+.auth-form .btn { padding: 12px 15px; border: none; border-radius: 8px; color: white; cursor: pointer; transition: background-color 0.3s; font-size: 1rem; font-weight: 500; }
+.auth-form .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+.auth-toggle { margin-top: 20px; color: #555; cursor: pointer; }
+.auth-toggle:hover { text-decoration: underline; }
+#auth-error { color: red; margin-top: 10px; min-height: 1.2em; }
+.forgot-password-link { font-size: 0.9rem; color: #667eea; cursor: pointer; margin-top: 10px; text-align: right; }
+.forgot-password-link:hover { text-decoration: underline; }
+.divider { display: flex; align-items: center; text-align: center; color: #aaa; margin: 15px 0; }
+.divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
+.divider:not(:empty)::before { margin-right: .25em; }
+.divider:not(:empty)::after { margin-left: .25em; }
+.btn-google { background-color: #2747d4; color: #444; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: all 0.2s ease-in-out; }
+.btn-google:hover { background-color: darkmagenta; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
+.btn-google svg { width: 18px; height: 18px; }
+.stay-logged-in { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #555; margin-top: -5px; margin-bottom: 5px; }
+.stay-logged-in input { width: auto; }
+
+/* App Styles */
+#app-container { display: none; }
+.app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;}
+.welcome-message { display: flex; align-items: center; gap: 10px; color: #555; font-weight: 500;}
+.header-actions { display: flex; align-items: center; gap: 15px; }
+.icon-btn { background: none; border: none; cursor: pointer; color: #667eea; position: relative; } /* Added position relative */
+.logout-btn { background: none; border: 1px solid #ddd; border-radius: 8px; padding: 8px 12px; color: #667eea; font-weight: 600; cursor: pointer; transition: all 0.2s ease;}
+.logout-btn:hover { background-color: #667eea; color: white; border-color: #667eea;}
+
+.mode-selector { margin-bottom: 20px; display: flex; gap: 20px; justify-content: center; } /* Increased gap */
+.mode-selector .btn {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid #ddd;
+    color: #333;
+}
+.mode-selector .btn.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: transparent;
+}
+
+.upload-area { border: 2px dashed #667eea; border-radius: 15px; padding: 40px 20px; margin: 30px 0; transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden; }
+.upload-area:hover { border-color: #764ba2; background: rgba(102, 126, 234, 0.05); transform: translateY(-2px); }
+.upload-icon { font-size: 3rem; color: #667eea; margin-bottom: 15px; }
+.upload-text { color: #666; font-size: 1.1rem; font-weight: 500; }
+#fileInput { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.card { background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 25px; color: white; box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3); transform: translateY(20px); opacity: 0; transition: all 0.5s ease; display: none; }
+.card.show { display: block; transform: translateY(0); opacity: 1; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.card h3 { margin: 0; font-size: 1.5rem; text-align: left; position: relative; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 12px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; }
+.detail-label { font-weight: 600; opacity: 0.9; }
+.detail-value { font-weight: 500; background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 12px; font-size: 0.9rem; border: 1px solid transparent; outline: none; color: white; text-align: right; }
+.detail-value:read-only { background: rgba(255, 255, 255, 0.2); border-color: transparent; }
+.detail-value:not(:read-only) { background: rgba(255, 255, 255, 0.3); border-color: white; }
+.loading { display: none; text-align: center; color: #667eea; margin: 20px 0; }
+.loading-spinner { width: 40px; height: 40px; border: 4px solid #e3e3e3; border-top: 4px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+#loading-text { font-weight: 500; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.feature-section { margin-top: 20px; background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: none; }
+.feature-section h4 { text-align: center; margin-bottom: 15px; color: #444; }
+.input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+#exchange-coach-input { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+.btn { padding: 10px 15px; border: none; border-radius: 8px; color: white; cursor: pointer; transition: background-color 0.3s; font-weight: 500;}
+.btn-primary { background-color: #2747d4; }
+.btn-primary:hover { background-color: darkmagenta; }
+.btn-secondary { background-color: #764ba2; }
+.btn-secondary:hover { background-color: #653f8a; }
+#availability-table { width: 100%; margin-top: 15px; border-collapse: collapse; display: none; }
+#availability-table th, #availability-table td { padding: 10px; border: 1px solid #ddd; text-align: left; vertical-align: middle; }
+#availability-table th { background-color: #f2f2f2; }
+.connect-btn { background: none; border: none; cursor: pointer; }
+
+/* Modal Styles */
+.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: white; border-radius: 15px; width: 90%; max-width: 400px; max-height: 80%; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.modal-header { padding: 15px; background: #667eea; color: white; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h4 { margin: 0; }
+.modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+.modal-body { flex-grow: 1; padding: 15px; overflow-y: auto; }
+.modal-footer { display: flex; padding: 15px; border-top: 1px solid #eee; }
+
+/* Verify User Prompt Styles */
+.verify-prompt {
+    padding: 15px;
+    margin: 0 15px 10px 15px; 
+    border: 1px solid #ffca28; /* A warm amber color */
+    background-color: #fff8e1; /* Light yellow background */
+    border-radius: 12px;
+    text-align: center;
+    max-width: calc(100% - 30px);
+}
+.btn-verify {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(45deg, #f59e0b, #ef4444); /* Amber to Red gradient */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none; /* For the <a> tag */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    border: none;
+}
+.btn-verify:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+.verify-disclaimer {
+    font-size: 0.8rem;
+    color: #616161; /* Dark grey */
+    line-height: 1.4;
+}
+
+/* Chat Modal Specifics */
+.chat-actions { /* Re-added for block/unblock button */
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Align items vertically */
+}
+.btn-block { /* Re-added for block/unblock button */
+    background-color: #f44336; /* Red for block */
+    padding: 6px 6px; /* Smaller padding for header */
+    font-size: 0.9rem;
+}
+.btn-block:hover {
+    background-color: #d32f2f;
+}
+.btn-unblock { /* Re-added for block/unblock button */
+    background-color: #4CAF50; /* Green for unblock */
+    padding: 6px 6px; /* Smaller padding for header */
+    font-size: 0.9rem;
+}
+.btn-unblock:hover {
+    background-color: #45a049;
+}
+#message-input:disabled { /* Retained for blocking UI */
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+#send-btn:disabled { /* Retained for blocking UI */
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.chat-messages { display: flex; flex-direction: column; gap: 10px; }
+.message { padding: 8px 12px; border-radius: 18px; max-width: 75%; position: relative; } /* Added position relative */
+.message.sent { background: #667eea; color: white; align-self: flex-end; }
+.message.received { background: #f1f1f1; color: #333; align-self: flex-start; }
+.message-timestamp {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7); /* Lighter color for readability on dark background */
+    margin-top: 4px;
+    display: block;
+    text-align: right;
+}
+.message.received .message-timestamp {
+    color: rgba(0, 0, 0, 0.5); /* Darker color for readability on light background */
+    text-align: left;
+}
+#message-input { flex-grow: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; }
+#send-btn { background: #667eea; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; margin-left: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+/* Typing Indicator Style */
+#typing-indicator {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 5px;
+    margin-left: 15px;
+    min-height: 1em; /* Reserve space to prevent layout shift */
+    text-align: left;
+}
+
+/* My Tickets Modal Specifics */
+.ticket-list-item { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; text-align: left; }
+.ticket-list-item p { margin: 0; color: #555; }
+.ticket-list-item strong { color: #333; }
+.ticket-actions { margin-top: 10px; display: flex; gap: 10px; }
+.ticket-actions .btn { font-size: 0.8rem; padding: 6px 10px; }
+.btn-danger { background-color: #ef4444; }
+.btn-danger:hover { background-color: #dc2626; }
+
+/* --- NEW: Notification Styles --- */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid white;
+    display: none; /* Hidden by default */
+}
+.notification-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-left: 4px solid transparent;
+}
+.notification-item:hover {
+    background-color: #e9ecef;
+}
+.notification-item.unread {
+    background-color: #e9eafc;
+    border-left-color: #667eea;
+    font-weight: 500;
+}
+.notification-item p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+.notification-item .msg-snippet {
+    color: #777;
+    font-style: italic;
+    margin-top: 4px;
+    font-size: 0.85rem;
+}
+.notification-item .timestamp {
+    font-size: 0.75rem;
+    color: #999;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.table-container {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
+    border-radius: 8px; /* Optional: keeps the rounded corners */
+    border: 1px solid #ddd; /* Optional: adds a border around the scrollable area */
+}
+
+/* --- RESPONSIVE STYLES START HERE --- */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start; /* Align container to the top on smaller screens */
+        padding-top: 20px;
+    }
+    .container {
+        padding: 25px;
+    }
+    .header h2 {
+        font-size: 1.75rem;
+    }
+    .card {
+        padding: 20px;
+    }
+}
+
+/* For mobile phones */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px 15px;
+    }
+    .header h2 {
+        font-size: 1.5rem;
+    }
+    .upload-area {
+        padding: 25px 15px;
+    }
+    .upload-text {
+        font-size: 1rem;
+    }
+    .app-header .welcome-message p {
+        font-size: 0.9rem;
+    }
+    .logout-btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Stack ticket details vertically for better readability */
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .detail-value {
+        width: 100%;
+        text-align: left;
+    }
+    
+    /* Stack exchange input and button vertically */
+    .input-group {
+        flex-direction: column;
+    }
+    .input-group .btn {
+        width: 100%;
+    }
+
+    /* --- Responsive Table --- */
+    /* Hide table headers */
+    #availability-table thead {
+        display: none;
+    }
+    /* Make rows look like cards */
+    #availability-table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    #availability-table td {
+        display: block;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+        border-bottom: 1px solid #eee;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    #availability-table td:last-child {
+        border-bottom: none;
+    }
+    /* Add labels using pseudo-elements */
+    #availability-table td::before {
+        content: attr(data-label); /* Use data-label for the label text */
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
+}
