@@ -1,6 +1,6 @@
 // --- File: Dashboard.jsx ---
 // This is the main screen users see after logging in.
-// FIXED: Now passes all required props to children components.
+// FIXED: Now correctly handles loading state to prevent unusual display.
 
 import React, { useState, useRef } from 'react';
 import { Header } from './Header';
@@ -37,10 +37,18 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                 </div>
             )}
 
-            {isLoading && <div className="loading" style={{display: 'block'}}><div className="loading-spinner"></div><p>🤖 Using AI to extract details...</p></div>}
+            {/* This logic now correctly shows the loading message OR the ticket details, but not both. */}
+            {isLoading && (
+                <div className="loading"> {/* The inline style is no longer needed here */}
+                    <div className="loading-spinner"></div>
+                    <p id="loading-text">🤖 Using AI to extract details...</p>
+                </div>
+            )}
+            
             {error && <p className="auth-error">{error}</p>}
             
-            {(ticketData || showManualEntry) && (
+            {/* Only show the ticket details card if NOT loading and there is data (or in manual mode) */}
+            {!isLoading && (ticketData || showManualEntry) && (
                 <TicketDetails 
                     initialData={ticketData} 
                     token={token} 
@@ -49,7 +57,8 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                 />
             )}
 
-            {ticketData && ticketData._id && (
+            {/* Only show the exchange section if NOT loading and a ticket has been saved */}
+            {!isLoading && ticketData && ticketData._id && (
                 <Exchange 
                     ticketData={ticketData} 
                     user={user} 
