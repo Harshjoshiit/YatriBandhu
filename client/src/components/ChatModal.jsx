@@ -1,8 +1,6 @@
-// --- File: ChatModal.jsx ---
-// This component is now updated to use the new, centralized socket.js file.
-
+// --- File: src/components/ChatModal.jsx ---
 import React, { useState, useEffect } from 'react';
-import socket from '../socket'; // <-- IMPORT the new socket instance
+import socket from '../socket.js'; // Imports from the new, correct file
 import { fetchChatHistory, blockUser, unblockUser } from '../utils/api';
 
 export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
@@ -16,23 +14,16 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
     
     useEffect(() => {
         if (isOpen) {
-            // Fetch message history when the modal opens
             fetchChatHistory(chatId, token)
                 .then(history => setMessages(history))
                 .catch(err => console.error("Failed to fetch chat history:", err));
 
-            // Join the chat room
             socket.emit('joinRoom', chatId);
 
-            // --- Set up all socket event listeners ---
-            const handleReceiveMessage = (message) => {
-                setMessages((prev) => [...prev, message]);
-            };
+            const handleReceiveMessage = (message) => setMessages((prev) => [...prev, message]);
             const handleTyping = () => setIsTyping(true);
             const handleStopTyping = () => setIsTyping(false);
-            const handleUserBlocked = ({ blockerId }) => {
-                if (blockerId === chatPartner._id) setAmIBlocked(true);
-            };
+            const handleUserBlocked = ({ blockerId }) => { if (blockerId === chatPartner._id) setAmIBlocked(true); };
             const handleUserUnblocked = () => setAmIBlocked(false);
 
             socket.on('receiveMessage', handleReceiveMessage);
@@ -41,7 +32,6 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
             socket.on('userBlocked', handleUserBlocked);
             socket.on('userUnblocked', handleUserUnblocked);
 
-            // --- Cleanup function to remove listeners when the modal closes ---
             return () => {
                 socket.off('receiveMessage', handleReceiveMessage);
                 socket.off('typing', handleTyping);
@@ -55,8 +45,8 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
             const messageData = { chatId, senderId: currentUser._id, recipientId: chatPartner._id, text: newMessage };
-            socket.emit('sendMessage', messageData); // Use the global socket to send
-            setMessages((prev) => [...prev, messageData]); // Optimistically update UI
+            socket.emit('sendMessage', messageData);
+            setMessages((prev) => [...prev, messageData]);
             setNewMessage('');
         }
     };
@@ -97,7 +87,7 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
                     <button onClick={onClose} className="modal-close">&times;</button>
                 </div>
                 <div className="modal-body chat-messages">
-                    {messages.map((msg, index) => {
+                    {messages..map((msg, index) => {
                         const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
                         return (
                             <div key={index} className={`message ${isSentByMe ? 'sent' : 'received'}`}>
