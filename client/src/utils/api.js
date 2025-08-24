@@ -1,7 +1,7 @@
 // --- File: utils/api.js ---
 // A centralized service for all backend API calls.
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 // Helper function to handle fetch responses
 const handleResponse = async (response) => {

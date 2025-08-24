@@ -9,7 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 // --- Function to call YOUR backend server ---
 const callBackendAPI = async (text) => {
     // The URL of the new Node.js server you just created
-    const backendUrl = "http://localhost:3001/api/tickets/parse-pdf";
+    const backendUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/tickets/parse-pdf`;
 
     try {
         const response = await fetch(backendUrl, {

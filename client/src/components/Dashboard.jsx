@@ -37,7 +37,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                 </div>
             )}
 
-            {isLoading && <div className="loading" style={{display: 'block'}}><div className="loading-spinner"></div><p>Processing...</p></div>}
+            {isLoading && <div className="loading" style={{display: 'block'}}><div className="loading-spinner"></div><p>🤖 Using AI to extract details...</p></div>}
             {error && <p className="auth-error">{error}</p>}
             
             {(ticketData || showManualEntry) && (
