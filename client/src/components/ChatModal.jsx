@@ -76,8 +76,6 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
     const placeholderText = amIBlocked ? "You have been blocked" : (isBlocked ? "You blocked this user" : "Type a message...");
     const isDisabled = isBlocked || amIBlocked;
 
-    // --- THE FIX IS HERE ---
-    // The inline style={{ display: 'flex' }} overrides the display: none from the CSS file.
     return (
         <div className="modal" style={{ display: 'flex' }}>
             <div className="modal-content">
