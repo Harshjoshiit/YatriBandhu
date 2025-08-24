@@ -27,8 +27,8 @@ const httpServer = createServer(app);
 // --- ROBUST CORS Configuration ---
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://yatribandhu.vercel.app",
-  "https://www.yatribandhu.vercel.app"
+  "https://yatri-bandhu.vercel.app",
+  "https://www.yatri-bandhu.vercel.app"
 ];
 
 const corsOptions = {
