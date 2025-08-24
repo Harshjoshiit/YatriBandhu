@@ -1,8 +1,9 @@
 // --- File: src/components/Exchange.jsx ---
-// This component is now fully connected and fixed to resolve build errors.
+// This component now correctly sends an email notification when a user connects.
 
 import React, { useState } from 'react';
-import ChatModal from './ChatModal'; // Use default import
+import emailjs from '@emailjs/browser'; // <-- IMPORT EMAILJS
+import ChatModal from './ChatModal';
 import { requestExchange, checkAvailability } from '../utils/api';
 
 export const Exchange = ({ ticketData, user, token }) => {
@@ -41,8 +42,30 @@ export const Exchange = ({ ticketData, user, token }) => {
         }
     };
 
-    const openChat = (partner) => {
+    // --- FIX IS HERE ---
+    // This function now opens the chat AND sends an email notification.
+    const openChatAndNotify = (partner) => {
         setChatPartner(partner);
+
+        const templateParams = {
+            to_email: partner.email,
+            to_name: partner.name,
+            from_name: user.name,
+            from_email: user.email,
+            message: `I have a ticket in coach ${ticketData.coach} and would like to exchange for a seat in your coach, ${desiredCoach}.`
+        };
+
+        // IMPORTANT: Replace with your actual EmailJS IDs from your dashboard
+        const serviceID = 'service_lw2szrx';
+        const templateID = 'template_ai0k8as';
+        const publicKey = 'XxTNdO8JQFCTpfgJ-';
+
+        emailjs.send(serviceID, templateID, templateParams, publicKey)
+            .then((response) => {
+               console.log('Connection email sent successfully!', response.status, response.text);
+            }, (err) => {
+               console.error('Failed to send connection email.', err);
+            });
     };
 
     return (
@@ -75,7 +98,8 @@ export const Exchange = ({ ticketData, user, token }) => {
                                         <td data-label="Name">{match.user.name}</td>
                                         <td data-label="Seat">{match.seat}</td>
                                         <td data-label="Connect">
-                                            <button onClick={() => openChat(match.user)} className="connect-btn">
+                                            {/* This button now calls the correct function */}
+                                            <button onClick={() => openChatAndNotify(match.user)} className="connect-btn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#667eea" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
                                             </button>
                                         </td>
