@@ -1,5 +1,5 @@
 // --- File: utils/api.js ---
-// A centralized service for all backend API calls.
+// A centralized service for all backend API calls, now with credentials included.
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
@@ -12,12 +12,19 @@ const handleResponse = async (response) => {
     return data;
 };
 
+// A helper to create headers, including the auth token
+const getAuthHeaders = (token) => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+});
+
 // --- User Authentication ---
 export const loginUser = (email, password) => {
     return fetch(`${API_URL}/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
@@ -26,94 +33,82 @@ export const registerUser = (name, email, password) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),
-    }).then(handleResponse);
-};
-
-// --- NEW: Block/Unblock Functions ---
-export const blockUser = (userIdToBlock, token) => {
-    return fetch(`${API_URL}/users/block/${userIdToBlock}`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` },
-    }).then(handleResponse);
-};
-
-export const unblockUser = (userIdToUnblock, token) => {
-    return fetch(`${API_URL}/users/block/${userIdToUnblock}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 // --- Ticket Management ---
 export const saveTicket = (ticketData, token) => {
-    return fetch(`${API_URL}/tickets`, { // Note: Changed from /save
+    return fetch(`${API_URL}/tickets`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify(ticketData),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 export const updateTicket = (ticketId, ticketData, token) => {
     return fetch(`${API_URL}/tickets/${ticketId}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify(ticketData),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 export const fetchMyTickets = (token) => {
     return fetch(`${API_URL}/tickets`, {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
+
+// ... and so on for all other fetch calls ...
 
 export const deleteTicket = (ticketId, token) => {
     return fetch(`${API_URL}/tickets/${ticketId}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 export const requestExchange = (ticketId, desiredCoach, token) => {
     return fetch(`${API_URL}/tickets/${ticketId}/exchange`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
+        headers: getAuthHeaders(token),
         body: JSON.stringify({ desiredCoach }),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 export const checkAvailability = (ticketId, token) => {
     return fetch(`${API_URL}/tickets/${ticketId}/availability`, {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 // --- Chat ---
 export const fetchChatHistory = (chatId, token) => {
     return fetch(`${API_URL}/chats/${chatId}`, {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 // --- Notifications ---
 export const fetchNotifications = (token) => {
     return fetch(`${API_URL}/notifications`, {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
 
 export const markNotificationRead = (notificationId, token) => {
     return fetch(`${API_URL}/notifications/${notificationId}/read`, {
         method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: getAuthHeaders(token),
+        credentials: 'include', // <-- ADDED
     }).then(handleResponse);
 };
