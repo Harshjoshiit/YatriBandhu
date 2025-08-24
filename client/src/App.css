@@ -355,3 +355,18 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   max-height: 400px; /* You can adjust this height */
   overflow-y: auto;
 }
+
+#app-container {
+  display: block !important; 
+}
+
+/* 2. Update the .loading class to use flexbox for better centering */
+.loading {
+    display: flex !important;       /* Use flex and !important to override inline styles */
+    flex-direction: column;         /* Stack the spinner and text vertically */
+    align-items: center;            /* Center them horizontally */
+    justify-content: center;        /* Center them vertically */
+    text-align: center;
+    color: #667eea;
+    margin: 20px 0;
+}
