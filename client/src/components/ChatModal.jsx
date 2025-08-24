@@ -1,6 +1,5 @@
 // --- File: components/ChatModal.jsx ---
-import React, 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { fetchChatHistory } from "../utils/api";
 
@@ -57,43 +56,53 @@ const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
 
   if (!isOpen) return null;
 
-  // --- UI RESTORED ---
-  // This JSX now matches the original, more styled UI from your self-contained file.
   return (
-    <div className="modal" style={{ display: 'flex' }}>
-        <div className="modal-content chat-container">
-            <div className="modal-header chat-header">
-                <h4 id="chat-with-name">Chat with {chatPartner?.name}</h4>
-                <button id="close-chat" className="modal-close" onClick={onClose}>&times;</button>
-            </div>
-            <div className="modal-body chat-messages" id="chat-messages">
-              {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`message ${
-                    msg.sender === currentUser._id
-                      ? "sent"
-                      : "received"
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              ))}
-            </div>
-            <div className="modal-footer chat-input">
-                <input 
-                  type="text" 
-                  id="message-input" 
-                  placeholder="Type a message..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                />
-                <button id="send-btn" onClick={sendMessage}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
-            </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white w-96 rounded-lg shadow-lg flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-semibold">
+            Chat with {chatPartner?.name}
+          </h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✖
+          </button>
         </div>
+
+        {/* Messages */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-2">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-2 rounded-lg max-w-xs ${
+                msg.sender === currentUser._id
+                  ? "ml-auto bg-blue-500 text-white"
+                  : "mr-auto bg-gray-200"
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+
+        {/* Input */}
+        <div className="flex p-3 border-t">
+          <input
+            type="text"
+            className="flex-1 border rounded-lg px-3 py-2 mr-2"
+            placeholder="Type a message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          />
+          <button
+            onClick={sendMessage}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
