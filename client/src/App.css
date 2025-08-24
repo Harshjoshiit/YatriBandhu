@@ -350,7 +350,7 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
   max-height: 400px; /* You can adjust this value */
   overflow-y: auto;
 }
-#notifications-list {
+/* #notifications-list {
   max-height: 400px; /* You can adjust this height */
   overflow-y: auto;
-}
+} */
