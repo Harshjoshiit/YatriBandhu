@@ -20,7 +20,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
         <div id="app-container" style={{ display: 'block' }}>
             <Header userName={user.name} handleLogout={handleLogout} token={token} onUseTicket={setTicketData} />
             <div className="header">
-                <h2>🚂 TravelBuddy</h2>
+                <h2>🚂 Yatri-Bandhu</h2>
                 <p>Upload your PDF ticket or enter details to find exchange partners</p>
             </div>
 
