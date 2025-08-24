@@ -3,6 +3,7 @@
 
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors'; 
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
@@ -23,7 +24,7 @@ connectDB();
 const app = express();
 const httpServer = createServer(app);
 
-// --- CORRECT CORS Configuration ---
+// --- CORS Configuration ---
 const allowedOrigins = [
     "http://localhost:5173",        // Your Vite frontend in dev
     "https://yatribandhu.vercel.app"  // Your deployed frontend on Vercel
@@ -31,7 +32,7 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: allowedOrigins,
-    credentials: true, // This is important for secure connections
+    credentials: true, // This is important for cookies, authorization headers with HTTPS
 };
 
 // --- Socket.io Server Setup with correct CORS ---
