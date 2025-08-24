@@ -1,5 +1,5 @@
 // --- File: server.js ---
-// Final version with the correct CORS configuration for a deployed MERN app.
+// Final version with the correct and robust CORS configuration for deployment.
 
 import express from 'express';
 import dotenv from 'dotenv';
@@ -24,15 +24,23 @@ connectDB();
 const app = express();
 const httpServer = createServer(app);
 
-// --- CORRECT CORS Configuration ---
+// --- ROBUST CORS Configuration ---
 const allowedOrigins = [
-    "http://localhost:5173",        // Your Vite frontend in dev
-    "https://yatribandhu.vercel.app"  // Your deployed frontend on Vercel
+    "http://localhost:5173",
+    "https://yatribandhu.vercel.app"
 ];
 
 const corsOptions = {
-    origin: allowedOrigins,
-    credentials: true, // This is important for cookies, authorization headers with HTTPS
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true,
 };
 
 // --- Socket.io Server Setup with correct CORS ---
@@ -43,7 +51,7 @@ const io = new Server(httpServer, {
 const PORT = process.env.PORT || 3001;
 
 // --- Middleware Setup ---
-app.use(cors(corsOptions)); // Use the same CORS options for the REST API
+app.use(cors(corsOptions)); // Use the CORS options for the REST API
 app.use(express.json());
 
 // API Routes
