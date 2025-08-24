@@ -1,5 +1,5 @@
 // --- File: Dashboard.jsx ---
-// Fixed version: PDF upload shows robot icon + "Using AI to extract details..." without layout jumps.
+// Fixed: PDF upload area keeps layout stable, overlay loader for AI extraction.
 
 import React, { useState, useRef } from 'react';
 import { Header } from './Header';
@@ -41,18 +41,27 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
 
             {/* Upload area */}
             {!showManualEntry && (
-                <div className="upload-area" onClick={() => fileInputRef.current.click()}>
-                    {!isLoading ? (
-                        <>
-                            <div className="upload-icon">📄</div>
-                            <div className="upload-text">Drop your PDF here or click to browse</div>
-                        </>
-                    ) : (
-                        <div className="loading" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <div className="upload-area" onClick={() => fileInputRef.current.click()} style={{ position: 'relative' }}>
+                    <div className="upload-icon">📄</div>
+                    <div className="upload-text">Drop your PDF here or click to browse</div>
+
+                    {/* Overlay loader */}
+                    {isLoading && (
+                        <div className="loading-overlay" style={{
+                            position: 'absolute',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            background: 'rgba(255, 255, 255, 0.8)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            pointerEvents: 'none' // allows underlying clicks if needed
+                        }}>
                             <div className="loading-spinner"></div>
                             <p>🤖 Using AI to extract details...</p>
                         </div>
                     )}
+
                     <input
                         type="file"
                         ref={fileInputRef}
