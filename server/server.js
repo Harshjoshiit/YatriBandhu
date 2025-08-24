@@ -1,9 +1,8 @@
 // --- File: server.js ---
-// Final version, importing and using all routes and the modular socket handler.
+// Final version with the correct CORS configuration for a deployed MERN app.
 
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
@@ -23,16 +22,27 @@ connectDB();
 
 const app = express();
 const httpServer = createServer(app);
+
+// --- CORRECT CORS Configuration ---
+const allowedOrigins = [
+    "http://localhost:5173",        // Your Vite frontend in dev
+    "https://yatribandhu.vercel.app"  // Your deployed frontend on Vercel
+];
+
+const corsOptions = {
+    origin: allowedOrigins,
+    credentials: true, // This is important for secure connections
+};
+
+// --- Socket.io Server Setup with correct CORS ---
 const io = new Server(httpServer, {
-    cors: {
-        origin: "*", // In production, you should restrict this to your frontend's URL
-    }
+    cors: corsOptions
 });
 
 const PORT = process.env.PORT || 3001;
 
-// Middleware Setup
-app.use(cors());
+// --- Middleware Setup ---
+app.use(cors(corsOptions)); // Use the same CORS options for the REST API
 app.use(express.json());
 
 // API Routes
