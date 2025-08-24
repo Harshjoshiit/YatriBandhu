@@ -1,89 +1,87 @@
 // --- File: ChatModal.jsx ---
-// Now fully connected with real-time chat, message history, and block/unblock functionality.
+// This component is now updated to use the new, centralized socket.js file.
 
 import React, { useState, useEffect } from 'react';
-import { useSocket } from '../hooks/useSocket';
+import socket from '../socket'; // <-- IMPORT the new socket instance
 import { fetchChatHistory, blockUser, unblockUser } from '../utils/api';
 
 export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
     const [newMessage, setNewMessage] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
     const [isBlocked, setIsBlocked] = useState(false);
     const [amIBlocked, setAmIBlocked] = useState(false);
     
-    // Create a consistent chat ID
     const chatId = [currentUser._id, chatPartner._id].sort().join('_'); 
     
-    // --- FIX: Destructure the 'socket' object from the useSocket hook ---
-    const { messages, setMessages, isTyping, sendMessage, startTyping, stopTyping, socket } = useSocket(chatId);
-
-    // Add listeners for real-time block/unblock events
-    useEffect(() => {
-        if (socket) {
-            socket.on('userBlocked', ({ blockerId }) => {
-                if (blockerId === chatPartner._id) {
-                    setAmIBlocked(true);
-                }
-            });
-            socket.on('userUnblocked', () => {
-                setAmIBlocked(false);
-            });
-        }
-        // Cleanup listeners
-        return () => {
-            if (socket) {
-                socket.off('userBlocked');
-                socket.off('userUnblocked');
-            }
-        };
-    }, [socket, chatPartner._id]);
-
-    // Fetch message history when the modal opens
     useEffect(() => {
         if (isOpen) {
+            // Fetch message history when the modal opens
             fetchChatHistory(chatId, token)
                 .then(history => setMessages(history))
                 .catch(err => console.error("Failed to fetch chat history:", err));
+
+            // Join the chat room
+            socket.emit('joinRoom', chatId);
+
+            // --- Set up all socket event listeners ---
+            const handleReceiveMessage = (message) => {
+                setMessages((prev) => [...prev, message]);
+            };
+            const handleTyping = () => setIsTyping(true);
+            const handleStopTyping = () => setIsTyping(false);
+            const handleUserBlocked = ({ blockerId }) => {
+                if (blockerId === chatPartner._id) setAmIBlocked(true);
+            };
+            const handleUserUnblocked = () => setAmIBlocked(false);
+
+            socket.on('receiveMessage', handleReceiveMessage);
+            socket.on('typing', handleTyping);
+            socket.on('stopTyping', handleStopTyping);
+            socket.on('userBlocked', handleUserBlocked);
+            socket.on('userUnblocked', handleUserUnblocked);
+
+            // --- Cleanup function to remove listeners when the modal closes ---
+            return () => {
+                socket.off('receiveMessage', handleReceiveMessage);
+                socket.off('typing', handleTyping);
+                socket.off('stopTyping', handleStopTyping);
+                socket.off('userBlocked', handleUserBlocked);
+                socket.off('userUnblocked', handleUserUnblocked);
+            };
         }
-    }, [isOpen, chatId, token, setMessages]);
+    }, [isOpen, chatId, token, chatPartner._id]);
 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
             const messageData = { chatId, senderId: currentUser._id, recipientId: chatPartner._id, text: newMessage };
-            sendMessage(messageData);
+            socket.emit('sendMessage', messageData); // Use the global socket to send
+            setMessages((prev) => [...prev, messageData]); // Optimistically update UI
             setNewMessage('');
-            stopTyping();
         }
     };
-
+    
     const handleBlockToggle = async () => {
-        // This check ensures the socket object is available before trying to use it.
-        if (!socket) {
-            alert("Connection not yet established. Please try again in a moment.");
-            return;
-        }
-
-        try {
-            if (isBlocked) {
-                await unblockUser(chatPartner._id, token);
-                socket.emit('unblockUser', { chatId }); // Notify other user
-                alert(`${chatPartner.name} has been unblocked.`);
-                setIsBlocked(false);
-            } else {
-                if (window.confirm(`Are you sure you want to block ${chatPartner.name}? You will not be able to send or receive messages.`)) {
+        if (window.confirm(`Are you sure you want to ${isBlocked ? 'unblock' : 'block'} ${chatPartner.name}?`)) {
+            try {
+                if (isBlocked) {
+                    await unblockUser(chatPartner._id, token);
+                    socket.emit('unblockUser', { chatId });
+                    setIsBlocked(false);
+                } else {
                     await blockUser(chatPartner._id, token);
-                    socket.emit('blockUser', { chatId, blockerId: currentUser._id }); // Notify other user
-                    alert(`${chatPartner.name} has been blocked.`);
+                    socket.emit('blockUser', { chatId, blockerId: currentUser._id });
                     setIsBlocked(true);
                 }
+            } catch (error) {
+                alert(`Failed to update block status: ${error.message}`);
             }
-        } catch (error) {
-            alert(`Failed to update block status: ${error.message}`);
         }
     };
 
     if (!isOpen) return null;
 
-    const placeholderText = amIBlocked ? "You have been blocked by this user" : (isBlocked ? "You have blocked this user" : "Type a message...");
+    const placeholderText = amIBlocked ? "You have been blocked" : (isBlocked ? "You blocked this user" : "Type a message...");
     const isDisabled = isBlocked || amIBlocked;
 
     return (
@@ -100,7 +98,6 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
                 </div>
                 <div className="modal-body chat-messages">
                     {messages.map((msg, index) => {
-                        // FIX: This logic correctly identifies the sender for both real-time and fetched messages.
                         const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
                         return (
                             <div key={index} className={`message ${isSentByMe ? 'sent' : 'received'}`}>
@@ -115,11 +112,7 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
                         type="text" 
                         placeholder={placeholderText}
                         value={newMessage}
-                        onChange={(e) => {
-                            setNewMessage(e.target.value);
-                            startTyping();
-                        }}
-                        onBlur={stopTyping}
+                        onChange={(e) => setNewMessage(e.target.value)}
                         disabled={isDisabled}
                     />
                     <button onClick={handleSendMessage} disabled={isDisabled}>Send</button>
