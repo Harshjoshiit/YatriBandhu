@@ -1,8 +1,8 @@
-// --- File: ChatModal.jsx ---
-// This component is now updated to use the new, centralized socket.js file.
+// --- File: src/components/ChatModal.jsx ---
+// This is the final version, combining the original UI with the new, stable socket logic.
 
 import React, { useState, useEffect } from 'react';
-import socket from '../socket'; // <-- IMPORT the new socket instance
+import socket from '../socket'; // Use the new, centralized socket instance
 import { fetchChatHistory, blockUser, unblockUser } from '../utils/api';
 
 export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
@@ -24,15 +24,11 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
             // Join the chat room
             socket.emit('joinRoom', chatId);
 
-            // --- Set up all socket event listeners ---
-            const handleReceiveMessage = (message) => {
-                setMessages((prev) => [...prev, message]);
-            };
+            // Set up all socket event listeners
+            const handleReceiveMessage = (message) => setMessages((prev) => [...prev, message]);
             const handleTyping = () => setIsTyping(true);
             const handleStopTyping = () => setIsTyping(false);
-            const handleUserBlocked = ({ blockerId }) => {
-                if (blockerId === chatPartner._id) setAmIBlocked(true);
-            };
+            const handleUserBlocked = ({ blockerId }) => { if (blockerId === chatPartner._id) setAmIBlocked(true); };
             const handleUserUnblocked = () => setAmIBlocked(false);
 
             socket.on('receiveMessage', handleReceiveMessage);
@@ -41,7 +37,7 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
             socket.on('userBlocked', handleUserBlocked);
             socket.on('userUnblocked', handleUserUnblocked);
 
-            // --- Cleanup function to remove listeners when the modal closes ---
+            // Cleanup function to remove listeners when the modal closes
             return () => {
                 socket.off('receiveMessage', handleReceiveMessage);
                 socket.off('typing', handleTyping);
@@ -55,8 +51,8 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
     const handleSendMessage = () => {
         if (newMessage.trim()) {
             const messageData = { chatId, senderId: currentUser._id, recipientId: chatPartner._id, text: newMessage };
-            socket.emit('sendMessage', messageData); // Use the global socket to send
-            setMessages((prev) => [...prev, messageData]); // Optimistically update UI
+            socket.emit('sendMessage', messageData);
+            setMessages((prev) => [...prev, messageData]);
             setNewMessage('');
         }
     };
@@ -86,36 +82,40 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
 
     return (
         <div className="modal" style={{ display: 'flex' }}>
-            <div className="modal-content">
-                <div className="modal-header">
-                    <h4>Chat with {chatPartner.name}</h4>
+            <div className="modal-content chat-container">
+                <div className="modal-header chat-header">
+                    <h4 id="chat-with-name">Chat with {chatPartner?.name}</h4>
                     <div className="chat-actions">
                         <button onClick={handleBlockToggle} className={`btn ${isBlocked ? 'btn-unblock' : 'btn-block'}`} disabled={amIBlocked}>
                             {isBlocked ? 'Unblock' : 'Block'}
                         </button>
                     </div>
-                    <button onClick={onClose} className="modal-close">&times;</button>
+                    <button id="close-chat" className="modal-close" onClick={onClose}>&times;</button>
                 </div>
-                <div className="modal-body chat-messages">
-                    {messages.map((msg, index) => {
-                        const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
-                        return (
-                            <div key={index} className={`message ${isSentByMe ? 'sent' : 'received'}`}>
-                                {msg.text}
-                            </div>
-                        );
-                    })}
+                <div className="modal-body chat-messages" id="chat-messages">
+                  {messages.map((msg, idx) => {
+                    const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
+                    return (
+                        <div key={idx} className={`message ${isSentByMe ? "sent" : "received"}`}>
+                            {msg.text}
+                        </div>
+                    );
+                  })}
                 </div>
                 {isTyping && <div id="typing-indicator">...typing</div>}
                 <div className="modal-footer chat-input">
                     <input 
-                        type="text" 
-                        placeholder={placeholderText}
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        disabled={isDisabled}
+                      type="text" 
+                      id="message-input" 
+                      placeholder={placeholderText}
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                      disabled={isDisabled}
                     />
-                    <button onClick={handleSendMessage} disabled={isDisabled}>Send</button>
+                    <button id="send-btn" onClick={handleSendMessage} disabled={isDisabled}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </button>
                 </div>
             </div>
         </div>
