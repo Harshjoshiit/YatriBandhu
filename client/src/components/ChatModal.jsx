@@ -87,7 +87,7 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
                     <button onClick={onClose} className="modal-close">&times;</button>
                 </div>
                 <div className="modal-body chat-messages">
-                    {messages..map((msg, index) => {
+                    {messages?.map((msg, index) => {
                         const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
                         return (
                             <div key={index} className={`message ${isSentByMe ? 'sent' : 'received'}`}>
