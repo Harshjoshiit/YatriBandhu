@@ -1,6 +1,5 @@
 // --- File: Dashboard.jsx ---
-// This is the main screen users see after logging in.
-// FIXED: Now passes all required props to children components.
+// Fixed version: PDF upload shows robot icon + "Using AI to extract details..." without layout jumps.
 
 import React, { useState, useRef } from 'react';
 import { Header } from './Header';
@@ -11,7 +10,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
     const [showManualEntry, setShowManualEntry] = useState(false);
     const fileInputRef = useRef(null);
 
-    // This function will be passed to TicketDetails to update the state here
+    // Update ticket state from child component
     const handleTicketUpdate = (updatedTicket) => {
         setTicketData(updatedTicket);
     };
@@ -19,28 +18,55 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
     return (
         <div id="app-container" style={{ display: 'block' }}>
             <Header userName={user.name} handleLogout={handleLogout} token={token} onUseTicket={setTicketData} />
+
             <div className="header">
                 <h2>🚂 TravelBuddy</h2>
                 <p>Upload your PDF ticket or enter details to find exchange partners</p>
             </div>
 
             <div className="mode-selector">
-                <button onClick={() => { setShowManualEntry(false); setTicketData(null); }} className={`btn ${!showManualEntry ? 'active' : ''}`}>Upload Ticket</button>
-                <button onClick={() => { setShowManualEntry(true); setTicketData(null); }} className={`btn ${showManualEntry ? 'active' : ''}`}>Enter Manually</button>
+                <button
+                    onClick={() => { setShowManualEntry(false); setTicketData(null); }}
+                    className={`btn ${!showManualEntry ? 'active' : ''}`}
+                >
+                    Upload Ticket
+                </button>
+                <button
+                    onClick={() => { setShowManualEntry(true); setTicketData(null); }}
+                    className={`btn ${showManualEntry ? 'active' : ''}`}
+                >
+                    Enter Manually
+                </button>
             </div>
 
+            {/* Upload area */}
             {!showManualEntry && (
                 <div className="upload-area" onClick={() => fileInputRef.current.click()}>
-                    <div className="upload-icon">📄</div>
-                    <div className="upload-text">Drop your PDF here or click to browse</div>
-                    <input type="file" ref={fileInputRef} onChange={(e) => processPDF(e.target.files[0])} accept="application/pdf" style={{ display: 'none' }}/>
+                    {!isLoading ? (
+                        <>
+                            <div className="upload-icon">📄</div>
+                            <div className="upload-text">Drop your PDF here or click to browse</div>
+                        </>
+                    ) : (
+                        <div className="loading" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div className="loading-spinner"></div>
+                            <p>🤖 Using AI to extract details...</p>
+                        </div>
+                    )}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={(e) => processPDF(e.target.files[0])}
+                        accept="application/pdf"
+                        style={{ display: 'none' }}
+                    />
                 </div>
             )}
 
-            {isLoading && <div className="loading" style={{display: 'block'}}><div className="loading-spinner"></div><p>🤖 Using AI to extract details...</p></div>}
             {error && <p className="auth-error">{error}</p>}
-            
-            {(ticketData || showManualEntry) && (
+
+            {/* TicketDetails */}
+            {(ticketData || showManualEntry) && !isLoading && (
                 <TicketDetails 
                     initialData={ticketData} 
                     token={token} 
@@ -49,7 +75,8 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                 />
             )}
 
-            {ticketData && ticketData._id && (
+            {/* Exchange component */}
+            {ticketData && ticketData._id && !isLoading && (
                 <Exchange 
                     ticketData={ticketData} 
                     user={user} 
