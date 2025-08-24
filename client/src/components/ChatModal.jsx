@@ -1,6 +1,7 @@
 // --- File: src/components/ChatModal.jsx ---
 import React, { useState, useEffect } from "react";
 import socket from "../socket";
+import emailjs from '@emailjs/browser'; // <-- IMPORT EMAILJS
 import { fetchChatHistory, blockUser, unblockUser } from "../utils/api";
 
 const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
@@ -58,6 +59,28 @@ const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
 
     socket.emit("sendMessage", messageData);
     setMessages((prev) => [...prev, messageData]);
+    
+    // --- ADDED EMAILJS LOGIC ---
+    const templateParams = {
+        to_email: chatPartner.email,
+        to_name: chatPartner.name,
+        from_name: currentUser.name,
+        message: newMessage,
+    };
+
+    // IMPORTANT: Replace with your actual EmailJS IDs
+    const serviceID = 'YOUR_SERVICE_ID';
+    const templateID = 'YOUR_TEMPLATE_ID';
+    const publicKey = 'YOUR_PUBLIC_KEY';
+
+    emailjs.send(serviceID, templateID, templateParams, publicKey)
+        .then((response) => {
+           console.log('Email notification sent!', response.status, response.text);
+        }, (err) => {
+           console.error('Failed to send email notification.', err);
+        });
+    // --- END OF ADDED LOGIC ---
+
     setNewMessage("");
     socket.emit("stopTyping", { chatId });
   };
@@ -114,8 +137,6 @@ const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
 
         <div className="modal-body chat-messages">
           {messages.map((msg, idx) => {
-            // --- FIX IS HERE ---
-            // This logic now correctly identifies the sender for both real-time and fetched messages.
             const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
             return (
               <div
