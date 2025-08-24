@@ -1,5 +1,5 @@
 // --- File: src/socket.js ---
-// This new file manages the single, persistent WebSocket connection for the entire app.
+// This file manages the single, persistent WebSocket connection for the entire app.
 
 import { io } from "socket.io-client";
 
