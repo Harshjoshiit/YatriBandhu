@@ -1,140 +1,104 @@
-// --- File: src/components/ChatModal.jsx ---
-import React, { useState, useEffect } from "react";
-import socket from "../socket.js";
-import { fetchChatHistory, blockUser, unblockUser } from "../utils/api";
+// --- File: components/ChatModal.jsx ---
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+import { fetchChatHistory } from "../utils/api";
+
+// Use your backend URL from env
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3001";
+
+let socket;
 
 const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
-  const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [amIBlocked, setAmIBlocked] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
 
-  const chatId = [currentUser._id, chatPartner._id].sort().join("_");
-
+  // Connect socket when modal opens
   useEffect(() => {
-    if (isOpen) {
-      fetchChatHistory(chatId, token)
-        .then((history) => setMessages(history))
-        .catch((err) => console.error("Failed to fetch chat history:", err));
+    if (!isOpen || !currentUser) return;
 
-      socket.emit("joinRoom", chatId);
+    // Initialize socket connection
+    socket = io(SOCKET_URL, {
+      query: { userId: currentUser._id },
+      transports: ["websocket"],
+    });
 
-      const handleReceiveMessage = (message) =>
-        setMessages((prev) => [...prev, message]);
-      const handleTyping = () => setIsTyping(true);
-      const handleStopTyping = () => setIsTyping(false);
-      const handleUserBlocked = ({ blockerId }) => {
-        if (blockerId === chatPartner._id) setAmIBlocked(true);
-      };
-      const handleUserUnblocked = () => setAmIBlocked(false);
+    // Fetch existing chat history
+    const chatId = [currentUser._id, chatPartner._id].sort().join("-");
+    fetchChatHistory(chatId, token)
+      .then((history) => setMessages(history))
+      .catch((err) => console.error("Failed to load history:", err));
 
-      socket.on("receiveMessage", handleReceiveMessage);
-      socket.on("typing", handleTyping);
-      socket.on("stopTyping", handleStopTyping);
-      socket.on("userBlocked", handleUserBlocked);
-      socket.on("userUnblocked", handleUserUnblocked);
+    // Listen for incoming messages
+    socket.on("receiveMessage", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
 
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-        socket.off("typing", handleTyping);
-        socket.off("stopTyping", handleStopTyping);
-        socket.off("userBlocked", handleUserBlocked);
-        socket.off("userUnblocked", handleUserUnblocked);
-      };
-    }
-  }, [isOpen, chatId, token, chatPartner._id]);
+    return () => {
+      socket.disconnect();
+    };
+  }, [isOpen, chatPartner, currentUser, token]);
 
-  const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      const messageData = {
-        chatId,
-        senderId: currentUser._id,
-        recipientId: chatPartner._id,
-        text: newMessage,
-      };
-      socket.emit("sendMessage", messageData);
-      setMessages((prev) => [...prev, messageData]);
-      setNewMessage("");
-    }
-  };
+  // Send message
+  const sendMessage = () => {
+    if (!newMessage.trim()) return;
 
-  const handleBlockToggle = async () => {
-    if (
-      window.confirm(
-        `Are you sure you want to ${isBlocked ? "unblock" : "block"} ${
-          chatPartner.name
-        }?`
-      )
-    ) {
-      try {
-        if (isBlocked) {
-          await unblockUser(chatPartner._id, token);
-          socket.emit("unblockUser", { chatId });
-          setIsBlocked(false);
-        } else {
-          await blockUser(chatPartner._id, token);
-          socket.emit("blockUser", { chatId, blockerId: currentUser._id });
-          setIsBlocked(true);
-        }
-      } catch (error) {
-        alert(`Failed to update block status: ${error.message}`);
-      }
-    }
+    const msgData = {
+      sender: currentUser._id,
+      receiver: chatPartner._id,
+      text: newMessage,
+      timestamp: new Date().toISOString(),
+    };
+
+    socket.emit("sendMessage", msgData);
+    setMessages((prev) => [...prev, msgData]);
+    setNewMessage("");
   };
 
   if (!isOpen) return null;
 
-  const placeholderText = amIBlocked
-    ? "You have been blocked"
-    : isBlocked
-    ? "You blocked this user"
-    : "Type a message...";
-  const isDisabled = isBlocked || amIBlocked;
-
   return (
-    <div className="modal" style={{ display: "flex" }}>
-      <div className="modal-content">
-        <div className="modal-header">
-          <h4>Chat with {chatPartner.name}</h4>
-          <div className="chat-actions">
-            <button
-              onClick={handleBlockToggle}
-              className={`btn ${isBlocked ? "btn-unblock" : "btn-block"}`}
-              disabled={amIBlocked}
-            >
-              {isBlocked ? "Unblock" : "Block"}
-            </button>
-          </div>
-          <button onClick={onClose} className="modal-close">
-            &times;
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white w-96 rounded-lg shadow-lg flex flex-col">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-semibold">
+            Chat with {chatPartner?.name}
+          </h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✖
           </button>
         </div>
-        <div className="modal-body chat-messages">
-          {Array.isArray(messages) &&
-            messages.map((msg, index) => {
-              const isSentByMe =
-                (msg.sender?._id || msg.senderId) === currentUser._id;
-              return (
-                <div
-                  key={index}
-                  className={`message ${isSentByMe ? "sent" : "received"}`}
-                >
-                  {msg.text}
-                </div>
-              );
-            })}
+
+        {/* Messages */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-2">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-2 rounded-lg max-w-xs ${
+                msg.sender === currentUser._id
+                  ? "ml-auto bg-blue-500 text-white"
+                  : "mr-auto bg-gray-200"
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
         </div>
-        {isTyping && <div id="typing-indicator">...typing</div>}
-        <div className="modal-footer chat-input">
+
+        {/* Input */}
+        <div className="flex p-3 border-t">
           <input
             type="text"
-            placeholder={placeholderText}
+            className="flex-1 border rounded-lg px-3 py-2 mr-2"
+            placeholder="Type a message..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            disabled={isDisabled}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
-          <button onClick={handleSendMessage} disabled={isDisabled}>
+          <button
+            onClick={sendMessage}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
             Send
           </button>
         </div>
