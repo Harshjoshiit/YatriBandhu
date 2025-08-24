@@ -114,7 +114,9 @@ const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) => {
 
         <div className="modal-body chat-messages">
           {messages.map((msg, idx) => {
-            const isSentByMe = msg.senderId === currentUser._id;
+            // --- FIX IS HERE ---
+            // This logic now correctly identifies the sender for both real-time and fetched messages.
+            const isSentByMe = (msg.sender?._id || msg.senderId) === currentUser._id;
             return (
               <div
                 key={idx}
