@@ -93,6 +93,23 @@ export const fetchChatHistory = (chatId, token) => {
         headers: getAuthHeaders(token),
         credentials: 'include',
     }).then(handleResponse);
+}
+
+// --- Block/Unblock Functions ---
+export const blockUser = (userIdToBlock, token) => {
+    return fetch(`${API_URL}/users/block/${userIdToBlock}`, {
+        method: 'POST',
+        headers: getAuthHeaders(token),
+        credentials: 'include',
+    }).then(handleResponse);
+};
+
+export const unblockUser = (userIdToUnblock, token) => {
+    return fetch(`${API_URL}/users/block/${userIdToUnblock}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders(token),
+        credentials: 'include',
+    }).then(handleResponse);
 };
 
 // --- Notifications ---
