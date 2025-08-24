@@ -26,22 +26,24 @@ const httpServer = createServer(app);
 
 // --- ROBUST CORS Configuration ---
 const allowedOrigins = [
-    "http://localhost:5173",
-    "https://yatribandhu.vercel.app"
+  "http://localhost:5173",
+  "https://yatribandhu.vercel.app",
+  "https://www.yatribandhu.vercel.app"
 ];
 
 const corsOptions = {
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    credentials: true,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 };
+
+app.use(cors(corsOptions));
+
 
 // --- Socket.io Server Setup with correct CORS ---
 const io = new Server(httpServer, {
