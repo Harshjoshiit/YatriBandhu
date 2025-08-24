@@ -7,9 +7,9 @@ import { io } from "socket.io-client";
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:3001";
 
 // Create the socket instance.
-// The 'transports' option is a great way to avoid connection issues on some networks.
+// Allowing 'polling' as a fallback is crucial for services like Render's free tier.
 const socket = io(SOCKET_URL, {
-  transports: ["websocket"], // Force WebSocket connection to avoid polling issues
+  transports: ["websocket", "polling"], // Allow polling as a fallback
 });
 
 export default socket;
