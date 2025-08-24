@@ -121,3 +121,4 @@ export const ChatModal = ({ isOpen, onClose, chatPartner, currentUser, token }) 
         </div>
     );
 };
+export default ChatModal;
