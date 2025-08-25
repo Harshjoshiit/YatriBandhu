@@ -1,4 +1,4 @@
-// --- File: App.jsx ---
+// --- File: App.jsx --- 
 // This version adds a wrapper for the auth pages to apply a different background.
 
 import React, { useState, useEffect } from 'react';
