@@ -17,16 +17,13 @@ export default function AestheticCard() {
             <div 
                 className={`
                     relative w-96 h-[500px] rounded-3xl overflow-hidden cursor-pointer
+                    bg-gradient-to-br from-indigo-900/20 via-purple-900/20 to-pink-900/20
+                    backdrop-blur-xl border border-white/10
                     transform transition-all duration-700 ease-out
                     ${isHovered ? 'scale-105 shadow-2xl shadow-purple-500/25' : 'shadow-xl'}
                 `}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
-                style={{
-                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
-                }}
             >
                 {/* Animated Background Elements */}
                 <div className="absolute inset-0 overflow-hidden">
@@ -34,16 +31,14 @@ export default function AestheticCard() {
                     {[...Array(6)].map((_, i) => (
                         <div
                             key={i}
-                            className={`
-                                absolute bg-white/5 rounded-full blur-sm
-                                animate-pulse transition-all duration-[${3000 + i * 500}ms] ease-in-out
-                            `}
+                            className="absolute bg-white/5 rounded-full blur-sm animate-pulse"
                             style={{
                                 width: `${40 + i * 10}px`,
                                 height: `${20 + i * 5}px`,
                                 top: `${10 + i * 15}%`,
                                 left: `${-10 + (animationState * 25)}%`,
-                                animationDelay: `${i * 0.5}s`
+                                animationDelay: `${i * 0.5}s`,
+                                animationDuration: `${3 + i * 0.5}s`
                             }}
                         />
                     ))}
@@ -53,8 +48,7 @@ export default function AestheticCard() {
                         <Star
                             key={`star-${i}`}
                             className={`
-                                absolute text-white/30 w-2 h-2
-                                animate-pulse transition-opacity duration-2000
+                                absolute text-white/30 w-2 h-2 animate-pulse
                                 ${animationState % 2 === i % 2 ? 'opacity-100' : 'opacity-30'}
                             `}
                             style={{
@@ -107,17 +101,19 @@ export default function AestheticCard() {
                     {/* Feature Icons */}
                     <div className="flex justify-center space-x-8 mb-8">
                         {[
-                            { icon: MapPin, label: 'Destinations', delay: '0ms' },
-                            { icon: Users, label: 'Community', delay: '200ms' },
-                            { icon: Star, label: 'Premium', delay: '400ms' }
-                        ].map(({ icon: Icon, label, delay }) => (
+                            { icon: MapPin, label: 'Destinations' },
+                            { icon: Users, label: 'Community' },
+                            { icon: Star, label: 'Premium' }
+                        ].map(({ icon: Icon, label }, index) => (
                             <div 
                                 key={label}
                                 className={`
                                     flex flex-col items-center space-y-2 transition-all duration-500
                                     ${isHovered ? 'transform -translate-y-2' : ''}
                                 `}
-                                style={{ transitionDelay: delay }}
+                                style={{ 
+                                    transitionDelay: `${index * 200}ms` 
+                                }}
                             >
                                 <div className="p-2 rounded-lg bg-white/10 backdrop-blur-sm">
                                     <Icon className="w-5 h-5 text-white/80" />
@@ -158,10 +154,8 @@ export default function AestheticCard() {
                                         transition-all duration-1000
                                         ${isHovered ? 'opacity-100' : 'opacity-70'}
                                     `}
-                                    style={{
-                                        strokeDasharray: '500',
-                                        strokeDashoffset: isHovered ? '0' : '500',
-                                    }}
+                                    strokeDasharray="500"
+                                    strokeDashoffset={isHovered ? '0' : '500'}
                                 />
                                 
                                 {/* Animated Plane on Path */}
@@ -175,12 +169,6 @@ export default function AestheticCard() {
                                         r="3"
                                         fill="white"
                                         className="animate-pulse"
-                                    />
-                                    <Plane 
-                                        className="w-4 h-4 text-white"
-                                        style={{
-                                            transform: `translate(${45 + (animationState * 70)}px, ${45 - Math.sin((animationState * 70) / 50) * 15}px)`,
-                                        }}
                                     />
                                 </g>
                                 
@@ -220,15 +208,10 @@ export default function AestheticCard() {
 
                 {/* Subtle Border Glow */}
                 <div className={`
-                    absolute inset-0 rounded-3xl transition-opacity duration-500
+                    absolute inset-0 rounded-3xl transition-opacity duration-500 pointer-events-none
+                    bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10
                     ${isHovered ? 'opacity-100' : 'opacity-0'}
-                `} 
-                style={{
-                    background: 'linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.1) 25%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 75%, transparent 100%)',
-                    padding: '1px',
-                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                    WebkitMaskComposite: 'subtract'
-                }} />
+                `} />
             </div>
         </div>
     );
