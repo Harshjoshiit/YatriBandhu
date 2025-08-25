@@ -26,7 +26,7 @@ export const Login = ({ onLogin }) => {
     return (
         <div className="auth-container">
             <div className="header">
-                <h2 id="auth-title">Login to TravelBuddy</h2>
+                <h2 id="auth-title">Login to YatriBandhu</h2>
             </div>
             <form onSubmit={handleSubmit} id="login-form" className="auth-form">
                 <input 
