@@ -2,6 +2,7 @@
 // This version adds a wrapper for the auth pages to apply a different background.
 
 import React, { useState, useEffect } from 'react';
+import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
