@@ -39,6 +39,9 @@ body {
 .auth-page-wrapper .container {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 40px;
 }
 
 /* --- Main Layout Container for Dashboard --- */
