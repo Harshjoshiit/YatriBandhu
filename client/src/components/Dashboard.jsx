@@ -7,7 +7,7 @@ import { Header } from './Header';
 import { TicketDetails } from './TicketDetails';
 import { Exchange } from './Exchange';
 import AestheticCard from './Card'; 
-import AIAssist from './Card'; 
+import AIAssist from './AIAssist'; 
 
 export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData, processPDF, isLoading, error }) => {
     const [showManualEntry, setShowManualEntry] = useState(false);
