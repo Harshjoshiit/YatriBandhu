@@ -6,7 +6,7 @@ import React, { useState, useRef } from 'react';
 import { Header } from './Header';
 import { TicketDetails } from './TicketDetails';
 import { Exchange } from './Exchange';
-import { AestheticCard } from './Card'; 
+import AestheticCard from './Card'; 
 
 export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData, processPDF, isLoading, error }) => {
     const [showManualEntry, setShowManualEntry] = useState(false);
