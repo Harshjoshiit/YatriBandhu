@@ -19,6 +19,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
     };
 
     return (
+        <>
         <div className="dashboard-layout">
             <AestheticCard />
         <div id="app-container" className="main-content" style={{ display: 'block' }}>
@@ -71,5 +72,6 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     <a href="#">Terms of Service</a>
                 </div>
             </footer>
+    <>
     );
 };
