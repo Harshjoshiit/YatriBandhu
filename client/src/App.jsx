@@ -59,7 +59,14 @@ export default function App() {
     if (isLoading) {
         return <div className="container" style={{textAlign: 'center', display: 'block'}}>Loading...</div>;
     }
-
+    // A helper component to wrap auth routes in the old UI
+    const AuthLayout = ({ children }) => (
+        <div className="auth-page-wrapper">
+            <div className="container">
+                {children}
+            </div>
+        </div>
+    );
     return (
         <Router>
             <div className="container" style={{display: 'block'}}>
