@@ -13,6 +13,7 @@ const AIAssist = () => {
           width: 100%;
           max-width: 400px; /* Set a max-width to prevent overflow */
           padding: 20px;
+          align-self: stretch; 
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
