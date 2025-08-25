@@ -60,6 +60,14 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     token={token} 
                 />
             )}
+            <footer className="dashboard-footer">
+                <p>&copy; 2025 YatriBandhu. All Rights Reserved.</p>
+                <div className="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <span>&middot;</span>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </footer>
         </div>
             <AIAssist />
         </div>
