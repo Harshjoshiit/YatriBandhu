@@ -4,7 +4,7 @@ const AestheticCard = () => {
   const styles = {
     container: {
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0f0f23 0%, #1a0033 50%, #2d1b69 100%)',
+      background: 'linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #4c3d7a 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -53,7 +53,7 @@ const AestheticCard = () => {
       right: '-30px',
       width: '80px',
       height: '80px',
-      background: 'radial-gradient(circle, rgba(236, 72, 153, 0.4), rgba(168, 85, 247, 0.4))',
+      background: 'radial-gradient(circle, rgba(236, 72, 153, 0.6), rgba(192, 132, 252, 0.6))',
       borderRadius: '50%',
       filter: 'blur(30px)',
       animation: 'bounce 2s ease-in-out infinite'
@@ -91,7 +91,7 @@ const AestheticCard = () => {
       padding: '20px',
       marginBottom: '16px',
       borderRadius: '16px',
-      background: 'rgba(255, 255, 255, 0.05)',
+      background: 'rgba(255, 255, 255, 0.08)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
       transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
       cursor: 'pointer'
