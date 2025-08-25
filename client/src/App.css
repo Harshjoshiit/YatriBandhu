@@ -48,6 +48,7 @@ body {
 
 /* --- Main Layout Container for Dashboard --- */
 .dashboard-layout {
+    align-items: stretch;
     display: grid;
     grid-template-columns: 1fr; /* Default for mobile */
     gap: 2rem;
