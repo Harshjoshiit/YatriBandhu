@@ -1,248 +1,84 @@
-import React from 'react';
+// --- File: src/components/AestheticCard.jsx ---
+// This is the final version with a fixed layout and a new, lighter, beige theme.
 
-const AestheticCard = () => {
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #4c3d7a 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      position: 'relative',
-      overflow: 'hidden',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    },
-    particle: {
-      position: 'absolute',
-      borderRadius: '50%',
-      animation: 'float 3s ease-in-out infinite'
-    },
-    card: {
-      position: 'relative',
-      maxWidth: '400px',
-      width: '100%',
-      background: 'rgba(255, 255, 255, 0.05)',
-      backdropFilter: 'blur(20px)',
-      borderRadius: '24px',
-      padding: '40px',
-      border: '1px solid rgba(147, 51, 234, 0.3)',
-      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3)',
-      transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-      cursor: 'pointer'
-    },
-    cardHover: {
-      transform: 'scale(1.05) rotate(1deg)',
-      border: '1px solid rgba(147, 51, 234, 0.6)',
-      boxShadow: '0 40px 80px rgba(147, 51, 234, 0.3)'
-    },
-    glowOrb1: {
-      position: 'absolute',
-      top: '-30px',
-      left: '-30px',
-      width: '120px',
-      height: '120px',
-      background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.4))',
-      borderRadius: '50%',
-      filter: 'blur(40px)',
-      animation: 'pulse 2s ease-in-out infinite'
-    },
-    glowOrb2: {
-      position: 'absolute',
-      bottom: '-30px',
-      right: '-30px',
-      width: '80px',
-      height: '80px',
-      background: 'radial-gradient(circle, rgba(236, 72, 153, 0.6), rgba(192, 132, 252, 0.6))',
-      borderRadius: '50%',
-      filter: 'blur(30px)',
-      animation: 'bounce 2s ease-in-out infinite'
-    },
-    header: {
-      textAlign: 'center',
-      marginBottom: '40px',
-      position: 'relative'
-    },
-    plane: {
-      fontSize: '60px',
-      marginBottom: '20px',
-      display: 'block',
-      transition: 'transform 0.5s ease',
-      animation: 'float 3s ease-in-out infinite'
-    },
-    title: {
-      fontSize: '42px',
-      fontWeight: 'bold',
-      background: 'linear-gradient(135deg, #60a5fa, #a855f7, #ec4899)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      marginBottom: '16px',
-      transition: 'all 0.8s ease'
-    },
-    subtitle: {
-      color: '#d1d5db',
-      lineHeight: '1.6',
-      fontSize: '16px',
-      transition: 'color 0.5s ease'
-    },
-    featureItem: {
-      display: 'flex',
-      alignItems: 'center',
-      padding: '20px',
-      marginBottom: '16px',
-      borderRadius: '16px',
-      background: 'rgba(255, 255, 255, 0.08)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
-      transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-      cursor: 'pointer'
-    },
-    featureIcon: {
-      fontSize: '32px',
-      marginRight: '16px',
-      transition: 'transform 0.5s ease'
-    },
-    featureTitle: {
-      fontSize: '18px',
-      fontWeight: 'bold',
-      color: '#ffffff',
-      marginBottom: '4px',
-      transition: 'color 0.5s ease'
-    },
-    featureDesc: {
-      fontSize: '14px',
-      color: '#9ca3af',
-      transition: 'color 0.5s ease'
-    },
-    button: {
-      display: 'block',
-      margin: '40px auto 0',
-      padding: '16px 40px',
-      fontSize: '18px',
-      fontWeight: 'bold',
-      color: 'white',
-      background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)',
-      border: 'none',
-      borderRadius: '16px',
-      cursor: 'pointer',
-      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-      position: 'relative',
-      overflow: 'hidden',
-      animation: 'glow 2s ease-in-out infinite alternate'
-    },
-    decorativeElement: {
-      position: 'absolute',
-      opacity: 0.3,
-      transition: 'all 0.5s ease'
-    }
-  };
+import React, { useState } from 'react';
+import { Plane, MapPin, Users, Star } from 'lucide-react';
 
-  const keyframes = `
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.1); }
-    }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-    }
-    @keyframes glow {
-      0% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.5); }
-      100% { box-shadow: 0 0 40px rgba(147, 51, 234, 0.8), 0 0 60px rgba(59, 130, 246, 0.4); }
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-  `;
+export const AestheticCard = () => {
+    const [isHovered, setIsHovered] = useState(false);
 
-  return (
-    <>
-      <style>{keyframes}</style>
-      <div style={styles.container}>
-        {/* Background particles */}
-        <div style={{...styles.particle, top: '10%', left: '10%', width: '4px', height: '4px', background: '#60a5fa'}}></div>
-        <div style={{...styles.particle, top: '20%', right: '15%', width: '2px', height: '2px', background: '#a855f7'}}></div>
-        <div style={{...styles.particle, bottom: '30%', left: '20%', width: '3px', height: '3px', background: '#ec4899'}}></div>
-        
-        <div style={{position: 'relative', maxWidth: '400px', width: '100%'}}>
-          <div style={styles.glowOrb1}></div>
-          <div style={styles.glowOrb2}></div>
-          
-          <div 
-            style={styles.card}
-            onMouseEnter={(e) => Object.assign(e.target.style, styles.cardHover)}
-            onMouseLeave={(e) => Object.assign(e.target.style, styles.card)}
-          >
-            <div style={styles.header}>
-              <span 
-                style={styles.plane}
-                onMouseEnter={(e) => e.target.style.transform = 'scale(1.2) rotate(10deg)'}
-                onMouseLeave={(e) => e.target.style.transform = 'scale(1) rotate(0deg)'}
-              >
-                ✈️
-              </span>
-              <h1 style={styles.title}>Travel Smarter</h1>
-              <p style={styles.subtitle}>
-                Exchange seats, connect with fellow passengers, and make your journey extraordinary.
-              </p>
+    return (
+        <div 
+            className={`
+                aesthetic-card
+                relative w-full h-full rounded-2xl overflow-hidden cursor-pointer
+                bg-beige-100 border border-beige-200
+                transform transition-transform duration-300 ease-out
+                ${isHovered ? 'scale-105' : 'scale-100'}
+                shadow-lg
+            `}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-50" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23a0aec0\' fill-opacity=\'0.1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'}}>
             </div>
 
-            <div>
-              {[
-                {icon: '📍', title: 'Destinations', desc: 'Discover amazing places', color: '#60a5fa'},
-                {icon: '👥', title: 'Community', desc: 'Connect with travelers', color: '#a855f7'},
-                {icon: '⭐', title: 'Premium', desc: 'Upgrade your experience', color: '#ec4899'}
-              ].map((item, i) => (
-                <div 
-                  key={i}
-                  style={styles.featureItem}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                    e.currentTarget.style.background = `rgba(255, 255, 255, 0.1)`;
-                    e.currentTarget.style.boxShadow = `0 10px 30px rgba(${item.color === '#60a5fa' ? '96, 165, 250' : item.color === '#a855f7' ? '168, 85, 247' : '236, 72, 153'}, 0.3)`;
-                    e.currentTarget.querySelector('.icon').style.transform = 'scale(1.3) rotate(15deg)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.querySelector('.icon').style.transform = 'scale(1) rotate(0deg)';
-                  }}
-                >
-                  <span className="icon" style={styles.featureIcon}>{item.icon}</span>
-                  <div>
-                    <div style={styles.featureTitle}>{item.title}</div>
-                    <div style={styles.featureDesc}>{item.desc}</div>
-                  </div>
+            {/* Main Content */}
+            <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
+                {/* Icon */}
+                <div className={`
+                    mb-4 p-4 rounded-full bg-black bg-opacity-5
+                    transform transition-all duration-300
+                    ${isHovered ? 'rotate-6 scale-110' : 'rotate-0 scale-100'}
+                `}>
+                    <Plane className="w-10 h-10 text-gray-700" />
                 </div>
-              ))}
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                    Travel Smarter
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 text-base mb-6 leading-relaxed">
+                    Exchange seats, connect with fellow passengers, and make your journey extraordinary.
+                </p>
+
+                {/* Feature Icons */}
+                <div className="flex justify-center space-x-4 mb-6">
+                    <div className="flex flex-col items-center">
+                        <div className="p-2 rounded-lg bg-black bg-opacity-5 mb-1">
+                            <MapPin className="w-5 h-5 text-gray-700" />
+                        </div>
+                        <span className="text-xs text-gray-500">Destinations</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="p-2 rounded-lg bg-black bg-opacity-5 mb-1">
+                            <Users className="w-5 h-5 text-gray-700" />
+                        </div>
+                        <span className="text-xs text-gray-500">Community</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="p-2 rounded-lg bg-black bg-opacity-5 mb-1">
+                            <Star className="w-5 h-5 text-gray-700" />
+                        </div>
+                        <span className="text-xs text-gray-500">Premium</span>
+                    </div>
+                </div>
+
+                {/* CTA Button */}
+                <button className={`
+                    px-6 py-2 rounded-full font-semibold text-white
+                    bg-gradient-to-r from-blue-500 to-indigo-500
+                    hover:from-blue-600 hover:to-indigo-600
+                    transform transition-all duration-200
+                    ${isHovered ? 'scale-105' : 'scale-100'}
+                    shadow-md
+                `}>
+                    Start Your Journey
+                </button>
             </div>
-
-            <button 
-              style={styles.button}
-              onMouseEnter={(e) => {
-                e.target.style.transform = 'scale(1.1) rotate(-2deg)';
-                e.target.style.boxShadow = '0 20px 40px rgba(147, 51, 234, 0.6)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.transform = 'scale(1) rotate(0deg)';
-                e.target.style.boxShadow = '0 0 20px rgba(147, 51, 234, 0.5)';
-              }}
-            >
-              🚀 Start Your Journey
-            </button>
-
-            <div style={{...styles.decorativeElement, top: '20px', right: '20px', fontSize: '24px', animation: 'spin 15s linear infinite'}}>🌍</div>
-            <div style={{...styles.decorativeElement, bottom: '20px', left: '20px', fontSize: '20px', animation: 'float 3s ease-in-out infinite'}}>☁️</div>
-          </div>
         </div>
-      </div>
-    </>
-  );
+    );
 };
-
-export default AestheticCard;
