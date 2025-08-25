@@ -26,7 +26,7 @@ body {
     min-height: 100vh; 
 }
 
-/* --- NEW: Auth Page Wrapper to Restore Old UI --- */
+/* --- Auth Page Wrapper to Restore Old UI --- */
 .auth-page-wrapper {
     display: flex;
     align-items: center;
@@ -42,6 +42,8 @@ body {
     max-width: 500px;
     border-radius: 20px;
     padding: 40px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Main Layout Container for Dashboard --- */
@@ -56,15 +58,15 @@ body {
     margin: 0 auto;
 }
 
-/* The main app container */
+/* The main app container on the dashboard */
 .main-content { 
     background: #FFFFFF; 
     border-radius: 16px; 
     padding: 32px; 
     box-shadow: var(--card-shadow);
     width: 100%; 
-    max-width: 550px; /* Set a max-width for the main content */
-    margin: 0 auto; /* Center the main content on mobile */
+    max-width: 550px;
+    margin: 0 auto;
     text-align: center;
     border: 1px solid var(--border-color);
 }
@@ -72,19 +74,22 @@ body {
 /* --- Aesthetic Card Styling --- */
 .aesthetic-card {
     display: none; /* Hide on mobile by default */
-    background: #fdfaf2; /* Beige background color */
+    background-color: #fdfaf2; /* Beige background color */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4d8e2' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     border-radius: 16px;
     padding: 32px;
     text-align: center;
     border: 1px solid #f2eee3;
     animation: fadeIn 0.8s ease-out forwards;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     align-self: stretch; /* Makes the card full-height */
+    position: relative;
+    overflow: hidden;
 }
 
 .aesthetic-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes fadeIn {
@@ -95,6 +100,11 @@ body {
 .aesthetic-card .card-icon {
     margin-bottom: 24px;
     color: var(--primary-blue);
+    transition: transform 0.4s ease;
+}
+
+.aesthetic-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
 .aesthetic-card h3 {
@@ -109,20 +119,39 @@ body {
     line-height: 1.6;
 }
 
+.travel-animation {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.world-path {
+    stroke: var(--primary-blue);
+    stroke-width: 2;
+    stroke-dasharray: 1500;
+    stroke-dashoffset: 1500;
+    animation: draw-path 4s ease-out forwards;
+    animation-delay: 1s;
+}
+
+@keyframes draw-path {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 /* --- Media Query for Desktop Layout --- */
 @media (min-width: 1200px) {
     .dashboard-layout {
-        /* 3-column grid with the main content in the center */
         grid-template-columns: 1fr 550px 1fr;
-        align-items: stretch; /* Ensures columns are equal height */
+        align-items: stretch;
     }
     .aesthetic-card {
-        display: flex; /* Use flex to better center content vertically */
+        display: flex;
         flex-direction: column;
         justify-content: center;
     }
     .main-content {
-        margin: 0; /* Remove auto margin on desktop */
+        margin: 0;
     }
 }
 
@@ -190,17 +219,61 @@ body {
 .modal-footer.chat-input { display: flex; padding: 16px; border-top: 1px solid var(--border-color); gap: 12px; }
 #message-input { flex-grow: 1; border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 16px; font-size: 1rem; }
 #send-btn { background: var(--primary-blue); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.ticket-list-item, .notification-item { background-color: #FFFFFF; padding: 16px; border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border-color); text-align: left; transition: box-shadow 0.2s; }
-.ticket-list-item:hover, .notification-item:hover { box-shadow: 0 0 0 2px var(--primary-blue); }
-.ticket-info { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 16px; }
-.ticket-info p { margin: 0; color: var(--text-light); }
-.ticket-info strong { color: var(--text-dark); }
-.ticket-actions { display: flex; gap: 12px; justify-content: flex-end; }
-.ticket-actions .btn { padding: 8px 16px; font-size: 0.9rem; }
-.notification-item.unread { background-color: #EBF8FF; border-left: 4px solid var(--primary-blue); }
-.notification-item p { margin: 0; color: var(--text-dark); }
-.notification-item .msg-snippet { color: var(--text-light); font-style: italic; margin-top: 4px; }
-@media (max-width: 1199px) { /* Adjust breakpoint for tablets */
+
+/* --- My Tickets & Notification Modal Improvements --- */
+.ticket-list-item, .notification-item {
+    background-color: #FFFFFF;
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.ticket-list-item:hover, .notification-item:hover {
+    box-shadow: 0 0 0 2px var(--primary-blue);
+    transform: translateY(-2px);
+}
+.ticket-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+.ticket-info p {
+    margin: 0;
+    color: var(--text-light);
+}
+.ticket-info strong {
+    color: var(--text-dark);
+}
+.ticket-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end; /* Aligns buttons to the right */
+}
+.ticket-actions .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+.notification-item.unread {
+    background-color: #EBF8FF;
+    border-left: 4px solid var(--primary-blue);
+}
+.notification-item p {
+    margin: 0;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+.notification-item .msg-snippet {
+    color: var(--text-light);
+    font-style: italic;
+    margin-top: 4px;
+    font-size: 0.9rem;
+}
+
+/* 9. Responsive Design */
+@media (max-width: 1199px) {
     .dashboard-layout {
         padding: 1rem;
     }
