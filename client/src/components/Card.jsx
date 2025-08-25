@@ -1,75 +1,247 @@
 import React from 'react';
 
 const AestheticCard = () => {
+  const styles = {
+    container: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #0f0f23 0%, #1a0033 50%, #2d1b69 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      position: 'relative',
+      overflow: 'hidden',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    },
+    particle: {
+      position: 'absolute',
+      borderRadius: '50%',
+      animation: 'float 3s ease-in-out infinite'
+    },
+    card: {
+      position: 'relative',
+      maxWidth: '400px',
+      width: '100%',
+      background: 'rgba(255, 255, 255, 0.05)',
+      backdropFilter: 'blur(20px)',
+      borderRadius: '24px',
+      padding: '40px',
+      border: '1px solid rgba(147, 51, 234, 0.3)',
+      boxShadow: '0 25px 50px rgba(0, 0, 0, 0.3)',
+      transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+      cursor: 'pointer'
+    },
+    cardHover: {
+      transform: 'scale(1.05) rotate(1deg)',
+      border: '1px solid rgba(147, 51, 234, 0.6)',
+      boxShadow: '0 40px 80px rgba(147, 51, 234, 0.3)'
+    },
+    glowOrb1: {
+      position: 'absolute',
+      top: '-30px',
+      left: '-30px',
+      width: '120px',
+      height: '120px',
+      background: 'radial-gradient(circle, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.4))',
+      borderRadius: '50%',
+      filter: 'blur(40px)',
+      animation: 'pulse 2s ease-in-out infinite'
+    },
+    glowOrb2: {
+      position: 'absolute',
+      bottom: '-30px',
+      right: '-30px',
+      width: '80px',
+      height: '80px',
+      background: 'radial-gradient(circle, rgba(236, 72, 153, 0.4), rgba(168, 85, 247, 0.4))',
+      borderRadius: '50%',
+      filter: 'blur(30px)',
+      animation: 'bounce 2s ease-in-out infinite'
+    },
+    header: {
+      textAlign: 'center',
+      marginBottom: '40px',
+      position: 'relative'
+    },
+    plane: {
+      fontSize: '60px',
+      marginBottom: '20px',
+      display: 'block',
+      transition: 'transform 0.5s ease',
+      animation: 'float 3s ease-in-out infinite'
+    },
+    title: {
+      fontSize: '42px',
+      fontWeight: 'bold',
+      background: 'linear-gradient(135deg, #60a5fa, #a855f7, #ec4899)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      marginBottom: '16px',
+      transition: 'all 0.8s ease'
+    },
+    subtitle: {
+      color: '#d1d5db',
+      lineHeight: '1.6',
+      fontSize: '16px',
+      transition: 'color 0.5s ease'
+    },
+    featureItem: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '20px',
+      marginBottom: '16px',
+      borderRadius: '16px',
+      background: 'rgba(255, 255, 255, 0.05)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+      cursor: 'pointer'
+    },
+    featureIcon: {
+      fontSize: '32px',
+      marginRight: '16px',
+      transition: 'transform 0.5s ease'
+    },
+    featureTitle: {
+      fontSize: '18px',
+      fontWeight: 'bold',
+      color: '#ffffff',
+      marginBottom: '4px',
+      transition: 'color 0.5s ease'
+    },
+    featureDesc: {
+      fontSize: '14px',
+      color: '#9ca3af',
+      transition: 'color 0.5s ease'
+    },
+    button: {
+      display: 'block',
+      margin: '40px auto 0',
+      padding: '16px 40px',
+      fontSize: '18px',
+      fontWeight: 'bold',
+      color: 'white',
+      background: 'linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899)',
+      border: 'none',
+      borderRadius: '16px',
+      cursor: 'pointer',
+      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+      position: 'relative',
+      overflow: 'hidden',
+      animation: 'glow 2s ease-in-out infinite alternate'
+    },
+    decorativeElement: {
+      position: 'absolute',
+      opacity: 0.3,
+      transition: 'all 0.5s ease'
+    }
+  };
+
+  const keyframes = `
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.1); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.5); }
+      100% { box-shadow: 0 0 40px rgba(147, 51, 234, 0.8), 0 0 60px rgba(59, 130, 246, 0.4); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  `;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background particles */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-ping"></div>
-        <div className="absolute top-40 right-20 w-1 h-1 bg-purple-400 rounded-full animate-pulse"></div>
-        <div className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-pink-400 rounded-full animate-ping" style={{animationDelay: '1s'}}></div>
-      </div>
-
-      <div className="relative max-w-md w-full group">
-        {/* Glowing orbs */}
-        <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-gradient-to-r from-violet-500/30 to-pink-500/30 rounded-full blur-xl animate-bounce"></div>
+    <>
+      <style>{keyframes}</style>
+      <div style={styles.container}>
+        {/* Background particles */}
+        <div style={{...styles.particle, top: '10%', left: '10%', width: '4px', height: '4px', background: '#60a5fa'}}></div>
+        <div style={{...styles.particle, top: '20%', right: '15%', width: '2px', height: '2px', background: '#a855f7'}}></div>
+        <div style={{...styles.particle, bottom: '30%', left: '20%', width: '3px', height: '3px', background: '#ec4899'}}></div>
         
-        {/* Main Card with magical border */}
-        <div className="relative bg-gray-800/40 backdrop-blur-2xl rounded-3xl p-8 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-1000 hover:scale-110 hover:rotate-1 group-hover:shadow-2xl group-hover:shadow-purple-500/25">
+        <div style={{position: 'relative', maxWidth: '400px', width: '100%'}}>
+          <div style={styles.glowOrb1}></div>
+          <div style={styles.glowOrb2}></div>
           
-          {/* Animated border glow */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-sm group-hover:blur-none transition-all duration-700 -z-10"></div>
-          
-          {/* Header with floating plane */}
-          <div className="text-center mb-8 relative">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse"></div>
-            <div className="text-5xl mb-4 hover:scale-125 transition-transform duration-500 cursor-pointer animate-bounce" style={{animationDelay: '0.5s'}}>✈️</div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent hover:from-pink-400 hover:via-purple-400 hover:to-blue-400 transition-all duration-1000 cursor-pointer">
-              Travel Smarter
-            </h1>
-            <p className="text-gray-300 mt-4 leading-relaxed hover:text-white transition-colors duration-500">
-              Exchange seats, connect with fellow passengers, and make your journey extraordinary.
-            </p>
-          </div>
+          <div 
+            style={styles.card}
+            onMouseEnter={(e) => Object.assign(e.target.style, styles.cardHover)}
+            onMouseLeave={(e) => Object.assign(e.target.style, styles.card)}
+          >
+            <div style={styles.header}>
+              <span 
+                style={styles.plane}
+                onMouseEnter={(e) => e.target.style.transform = 'scale(1.2) rotate(10deg)'}
+                onMouseLeave={(e) => e.target.style.transform = 'scale(1) rotate(0deg)'}
+              >
+                ✈️
+              </span>
+              <h1 style={styles.title}>Travel Smarter</h1>
+              <p style={styles.subtitle}>
+                Exchange seats, connect with fellow passengers, and make your journey extraordinary.
+              </p>
+            </div>
 
-          {/* Glamorous Features */}
-          <div className="space-y-4">
-            {[
-              { icon: '📍', title: 'Destinations', desc: 'Discover amazing places', color: 'blue' },
-              { icon: '👥', title: 'Community', desc: 'Connect with travelers', color: 'purple' },
-              { icon: '⭐', title: 'Premium', desc: 'Upgrade your experience', color: 'pink' }
-            ].map((item, i) => (
-              <div key={i} className={`group/item relative p-5 rounded-2xl bg-gradient-to-r from-gray-700/20 to-gray-600/20 hover:from-${item.color}-500/10 hover:to-${item.color}-400/10 border border-gray-600/30 hover:border-${item.color}-400/50 transition-all duration-700 cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-${item.color}-500/25`} style={{animationDelay: `${i * 0.2}s`}}>
-                <div className="flex items-center space-x-4">
-                  <div className="text-3xl group-hover/item:scale-125 group-hover/item:rotate-12 transition-all duration-500">{item.icon}</div>
+            <div>
+              {[
+                {icon: '📍', title: 'Destinations', desc: 'Discover amazing places', color: '#60a5fa'},
+                {icon: '👥', title: 'Community', desc: 'Connect with travelers', color: '#a855f7'},
+                {icon: '⭐', title: 'Premium', desc: 'Upgrade your experience', color: '#ec4899'}
+              ].map((item, i) => (
+                <div 
+                  key={i}
+                  style={styles.featureItem}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.background = `rgba(255, 255, 255, 0.1)`;
+                    e.currentTarget.style.boxShadow = `0 10px 30px rgba(${item.color === '#60a5fa' ? '96, 165, 250' : item.color === '#a855f7' ? '168, 85, 247' : '236, 72, 153'}, 0.3)`;
+                    e.currentTarget.querySelector('.icon').style.transform = 'scale(1.3) rotate(15deg)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.querySelector('.icon').style.transform = 'scale(1) rotate(0deg)';
+                  }}
+                >
+                  <span className="icon" style={styles.featureIcon}>{item.icon}</span>
                   <div>
-                    <h3 className={`font-bold text-white group-hover/item:text-${item.color}-300 transition-colors duration-500`}>{item.title}</h3>
-                    <p className="text-sm text-gray-400 group-hover/item:text-gray-200 transition-colors duration-500">{item.desc}</p>
+                    <div style={styles.featureTitle}>{item.title}</div>
+                    <div style={styles.featureDesc}>{item.desc}</div>
                   </div>
                 </div>
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r from-${item.color}-500/5 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-700`}></div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Spectacular CTA Button */}
-          <div className="mt-8 text-center">
-            <button className="group/btn relative px-10 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/50 hover:scale-110 hover:-rotate-1 animate-pulse">
-              <span className="relative z-10 group-hover/btn:scale-105 transition-transform duration-300">🚀 Start Your Journey</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 transform translate-x-full group-hover/btn:translate-x-0 transition-transform duration-700"></div>
-              <div className="absolute inset-0 bg-white/20 transform scale-0 group-hover/btn:scale-100 transition-transform duration-300 rounded-2xl"></div>
+            <button 
+              style={styles.button}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'scale(1.1) rotate(-2deg)';
+                e.target.style.boxShadow = '0 20px 40px rgba(147, 51, 234, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'scale(1) rotate(0deg)';
+                e.target.style.boxShadow = '0 0 20px rgba(147, 51, 234, 0.5)';
+              }}
+            >
+              🚀 Start Your Journey
             </button>
-          </div>
 
-          {/* Floating decorative elements */}
-          <div className="absolute top-6 right-6 text-3xl opacity-30 animate-spin hover:opacity-80 transition-opacity duration-500" style={{animationDuration: '15s'}}>🌍</div>
-          <div className="absolute bottom-6 left-6 text-2xl opacity-40 animate-pulse hover:opacity-90 transition-opacity duration-500">☁️</div>
-          <div className="absolute top-1/2 left-2 text-lg opacity-20 animate-bounce" style={{animationDelay: '2s'}}>⭐</div>
+            <div style={{...styles.decorativeElement, top: '20px', right: '20px', fontSize: '24px', animation: 'spin 15s linear infinite'}}>🌍</div>
+            <div style={{...styles.decorativeElement, bottom: '20px', left: '20px', fontSize: '20px', animation: 'float 3s ease-in-out infinite'}}>☁️</div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
