@@ -67,9 +67,9 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     <span>&middot;</span>
                     <a href="#">Terms of Service</a>
                 </div>
+            </footer>
         </div>
             <AIAssist />
         </div>
-            </footer>
     );
 };
