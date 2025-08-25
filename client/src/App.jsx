@@ -1,8 +1,7 @@
 // --- File: App.jsx ---
-// This file now manages the full authentication state, including the JWT token.
+// This version adds a wrapper for the auth pages to apply a different background.
 
 import React, { useState, useEffect } from 'react';
-import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
@@ -59,6 +58,7 @@ export default function App() {
     if (isLoading) {
         return <div className="container" style={{textAlign: 'center', display: 'block'}}>Loading...</div>;
     }
+
     // A helper component to wrap auth routes in the old UI
     const AuthLayout = ({ children }) => (
         <div className="auth-page-wrapper">
@@ -67,33 +67,32 @@ export default function App() {
             </div>
         </div>
     );
+
     return (
         <Router>
-            <div className="container" style={{display: 'block'}}>
-                <Routes>
-                    <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/" />} />
-                    <Route path="/signup" element={!user ? <Signup onLogin={handleLogin} /> : <Navigate to="/" />} />
-                    <Route 
-                        path="/" 
-                        element={
-                            user ? (
-                                <Dashboard 
-                                    user={user}
-                                    token={token}
-                                    handleLogout={handleLogout}
-                                    ticketData={ticketData}
-                                    setTicketData={setTicketData}
-                                    processPDF={handlePdfProcess}
-                                    isLoading={isLoading}
-                                    error={error}
-                                />
-                            ) : (
-                                <Navigate to="/login" />
-                            )
-                        } 
-                    />
-                </Routes>
-            </div>
+            <Routes>
+                <Route path="/login" element={!user ? <AuthLayout><Login onLogin={handleLogin} /></AuthLayout> : <Navigate to="/" />} />
+                <Route path="/signup" element={!user ? <AuthLayout><Signup onLogin={handleLogin} /></AuthLayout> : <Navigate to="/" />} />
+                <Route 
+                    path="/" 
+                    element={
+                        user ? (
+                            <Dashboard 
+                                user={user}
+                                token={token}
+                                handleLogout={handleLogout}
+                                ticketData={ticketData}
+                                setTicketData={setTicketData}
+                                processPDF={handlePdfProcess}
+                                isLoading={isLoading}
+                                error={error}
+                            />
+                        ) : (
+                            <Navigate to="/login" />
+                        )
+                    } 
+                />
+            </Routes>
         </Router>
     );
 }
