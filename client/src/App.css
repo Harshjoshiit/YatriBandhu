@@ -48,7 +48,6 @@ body {
 
 /* --- Main Layout Container for Dashboard --- */
 .dashboard-layout {
-    align-items: stretch;
     display: grid;
     grid-template-columns: 1fr; /* Default for mobile */
     gap: 2rem;
@@ -143,7 +142,6 @@ body {
 /* --- Media Query for Desktop Layout --- */
 @media (min-width: 1200px) {
     .dashboard-layout {
-        align-items: stretch;
         grid-template-columns: 1fr 550px 1fr;
         align-items: stretch;
     }
