@@ -1,5 +1,5 @@
 /* --- FINAL UI FOR TRAVELBUDDY --- */
-
+ 
 /* 1. Base Setup & Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
@@ -60,7 +60,7 @@ body {
 
 /* The main app container on the dashboard */
 .main-content { 
-    background: #FFFFFF; 
+    background-color: rgb(239, 247, 194); 
     border-radius: 16px; 
     padding: 32px; 
     box-shadow: var(--card-shadow);
@@ -151,6 +151,7 @@ body {
         justify-content: center;
     }
     .main-content {
+        background-color: rgb(239, 247, 194);
         margin: 0;
     }
 }
@@ -284,6 +285,7 @@ body {
         padding: 0;
     }
     .main-content {
+        background-color: rgb(239, 247, 194);
         width: 100%;
         min-height: 100vh;
         border-radius: 0;
