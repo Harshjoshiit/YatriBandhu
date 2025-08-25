@@ -17,7 +17,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
     const handleTicketUpdate = (updatedTicket) => {
         setTicketData(updatedTicket);
     };
-
+ 
     return (
         <>
         <div className="dashboard-layout">
