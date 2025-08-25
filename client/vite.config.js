@@ -4,12 +4,12 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    include: ['lucide-react'],
+    include: ['lucide-react'], // Pre-bundle lucide-react to avoid Rollup treating it as external
   },
   build: {
     rollupOptions: {
-      // If any Node built-ins are accidentally imported
-      external: ['fs', 'path', 'os', 'crypto', 'stream', 'util'],
+      // Add any modules that Rollup thinks are Node-only
+      external: [],
     },
   },
 });
