@@ -1,6 +1,6 @@
 // --- File: App.jsx ---
 // This version adds a wrapper for the auth pages to apply a different background.
-
+import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from './components/Login';
