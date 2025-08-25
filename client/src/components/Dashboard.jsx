@@ -7,6 +7,7 @@ import { Header } from './Header';
 import { TicketDetails } from './TicketDetails';
 import { Exchange } from './Exchange';
 import AestheticCard from './Card'; 
+import AIAssist from './Card'; 
 
 export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData, processPDF, isLoading, error }) => {
     const [showManualEntry, setShowManualEntry] = useState(false);
@@ -60,7 +61,7 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                 />
             )}
         </div>
-            <AestheticCard />
+            <AIAssist />
         </div>
     );
 };
