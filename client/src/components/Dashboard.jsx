@@ -60,6 +60,9 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     token={token} 
                 />
             )}
+        </div>
+            <AIAssist />
+        </div>
             <footer className="dashboard-footer">
                 <p>&copy; 2025 YatriBandhu. All Rights Reserved.</p>
                 <div className="footer-links">
@@ -68,8 +71,5 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     <a href="#">Terms of Service</a>
                 </div>
             </footer>
-        </div>
-            <AIAssist />
-        </div>
     );
 };
