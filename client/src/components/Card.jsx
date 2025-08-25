@@ -122,10 +122,24 @@ const AestheticCard = () => {
           color: #718096;
         }
 
+        /* --- NEW: Floating Text Animation --- */
+        .floating-text {
+            animation: float-light 4s ease-in-out infinite;
+            transition: transform 0.5s ease;
+        }
+        .aesthetic-card-content:hover .floating-text {
+            transform: translateY(-5px);
+        }
+
+
         /* Keyframe animations */
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-8px); }
+        }
+        @keyframes float-light {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-4px); }
         }
         @keyframes pulse {
           from { transform: scale(0.8); opacity: 0.5; }
@@ -141,15 +155,16 @@ const AestheticCard = () => {
           <div style={{ position: 'relative', zIndex: 1 }}>
             <div className="card-header">
               <span className="plane-icon">✈️</span>
-              <h1 className="card-title">Travel Smarter</h1>
-              <p className="card-subtitle">
-                Exchange seats, connect with fellow passengers, and make your journey extraordinary.
-              </p>
+              <div className="floating-text">
+                <h1 className="card-title">Travel Smarter</h1>
+                <p className="card-subtitle">
+                  Exchange seats, connect with fellow passengers, and make your journey extraordinary.
+                </p>
+              </div>
             </div>
 
             <div>
               {[
-                {icon: '📍', title: 'Destinations', desc: 'Discover amazing places'},
                 {icon: '👥', title: 'Community', desc: 'Connect with travelers'},
                 {icon: '⭐', title: 'Premium', desc: 'Upgrade your experience'}
               ].map((item, i) => (
