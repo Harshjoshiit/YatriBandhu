@@ -26,7 +26,22 @@ body {
     min-height: 100vh; 
 }
 
-/* --- NEW: Main Layout Container --- */
+/* --- NEW: Auth Page Wrapper to Restore Old UI --- */
+.auth-page-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.auth-page-wrapper .container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+/* --- Main Layout Container for Dashboard --- */
 .dashboard-layout {
     display: grid;
     grid-template-columns: 1fr; /* Default for mobile */
@@ -51,16 +66,17 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* --- NEW: Aesthetic Card Styling --- */
+/* --- Aesthetic Card Styling --- */
 .aesthetic-card {
     display: none; /* Hide on mobile by default */
-    background: linear-gradient(145deg, #f9fcff, #eef4ff);
+    background: #fdfaf2; /* Beige background color */
     border-radius: 16px;
     padding: 32px;
     text-align: center;
-    border: 1px solid #e6efff;
+    border: 1px solid #f2eee3;
     animation: fadeIn 0.8s ease-out forwards;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-self: stretch; /* Makes the card full-height */
 }
 
 .aesthetic-card:hover {
@@ -95,9 +111,12 @@ body {
     .dashboard-layout {
         /* 3-column grid with the main content in the center */
         grid-template-columns: 1fr 550px 1fr;
+        align-items: stretch; /* Ensures columns are equal height */
     }
     .aesthetic-card {
-        display: block; /* Show the cards on desktop */
+        display: flex; /* Use flex to better center content vertically */
+        flex-direction: column;
+        justify-content: center;
     }
     .main-content {
         margin: 0; /* Remove auto margin on desktop */
@@ -106,8 +125,6 @@ body {
 
 
 /* --- ALL OTHER STYLES --- */
-/* (Header, Forms, Buttons, Modals, etc. from the previous complete stylesheet) */
-
 .header { margin-bottom: 32px; }
 .header h2 { color: var(--text-dark); font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
 .header p { color: var(--text-light); font-size: 1rem; }
