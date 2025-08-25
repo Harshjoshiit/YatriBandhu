@@ -72,6 +72,6 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     <a href="#">Terms of Service</a>
                 </div>
             </footer>
-    <>
+                </>
     );
 };
