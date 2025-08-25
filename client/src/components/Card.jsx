@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Plane, MapPin, Users, Star } from 'lucide-react';
 
-export const AestheticCard = () => {
+export default AestheticCard = () => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
