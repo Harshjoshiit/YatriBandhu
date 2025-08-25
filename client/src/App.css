@@ -60,7 +60,7 @@ body {
 
 /* The main app container on the dashboard */
 .main-content { 
-    background: #FFFFFF; 
+    background: lightsalmon; 
     border-radius: 16px; 
     padding: 32px; 
     box-shadow: var(--card-shadow);
@@ -142,6 +142,7 @@ body {
 /* --- Media Query for Desktop Layout --- */
 @media (min-width: 1200px) {
     .dashboard-layout {
+        align-items: stretch;
         grid-template-columns: 1fr 550px 1fr;
         align-items: stretch;
     }
