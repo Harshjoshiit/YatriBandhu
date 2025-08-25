@@ -1,34 +1,235 @@
-// --- File: src/components/AestheticCard.jsx ---
+import React, { useState, useEffect } from 'react';
+import { Plane, MapPin, Users, Star } from 'lucide-react';
 
-import React from 'react';
+export default function AestheticCard() {
+    const [isHovered, setIsHovered] = useState(false);
+    const [animationState, setAnimationState] = useState(0);
 
-// This is a decorative component with enhanced animations.
-export const AestheticCard = () => {
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setAnimationState(prev => (prev + 1) % 4);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
-        <div className="aesthetic-card">
-            <div className="card-content">
-                <div className="card-icon">
-                    {/* A simple, elegant plane icon */}
-                    <svg xmlns="http://www.w.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 5.2 5.2c.3.3.8.4 1.1.3l.5-.2c.4-.3.6-.7.5-1.2z"></path>
-                    </svg>
-                </div>
-                <h3>Travel Smarter</h3>
-                <p>Exchange seats, connect with fellow passengers, and make your journey better.</p>
-                
-                {/* --- NEW: Travel Animation --- */}
-                <div className="travel-animation">
-                    <svg width="100%" viewBox="0 0 900 450">
-                        <path 
-                            fill="none" 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round"
-                            className="world-path"
-                            d="M1,258 C10,253,25,228,58,225 C92,222,110,243,129,248 C148,253,161,242,183,235 C205,228,214,233,234,242 C254,251,269,248,285,238 C301,228,303,222,323,221 C343,220,359,233,378,241 C397,249,411,245,423,234 C435,223,436,214,451,211 C466,208,479,219,496,226 C513,233,525,228,539,218 C553,208,561,202,577,203 C593,204,603,216,620,223 C637,230,649,225,662,215 C675,205,681,194,697,192 C713,190,724,202,740,208 C756,214,767,208,779,198 C791,188,798,179,814,178 C830,177,839,188,854,195 C869,202,880,198,890,189"
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-8">
+            <div 
+                className={`
+                    relative w-96 h-[500px] rounded-3xl overflow-hidden cursor-pointer
+                    transform transition-all duration-700 ease-out
+                    ${isHovered ? 'scale-105 shadow-2xl shadow-purple-500/25' : 'shadow-xl'}
+                `}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                style={{
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+            >
+                {/* Animated Background Elements */}
+                <div className="absolute inset-0 overflow-hidden">
+                    {/* Floating Clouds */}
+                    {[...Array(6)].map((_, i) => (
+                        <div
+                            key={i}
+                            className={`
+                                absolute bg-white/5 rounded-full blur-sm
+                                animate-pulse transition-all duration-[${3000 + i * 500}ms] ease-in-out
+                            `}
+                            style={{
+                                width: `${40 + i * 10}px`,
+                                height: `${20 + i * 5}px`,
+                                top: `${10 + i * 15}%`,
+                                left: `${-10 + (animationState * 25)}%`,
+                                animationDelay: `${i * 0.5}s`
+                            }}
                         />
-                    </svg>
+                    ))}
+                    
+                    {/* Twinkling Stars */}
+                    {[...Array(12)].map((_, i) => (
+                        <Star
+                            key={`star-${i}`}
+                            className={`
+                                absolute text-white/30 w-2 h-2
+                                animate-pulse transition-opacity duration-2000
+                                ${animationState % 2 === i % 2 ? 'opacity-100' : 'opacity-30'}
+                            `}
+                            style={{
+                                top: `${Math.random() * 80}%`,
+                                left: `${Math.random() * 90}%`,
+                                animationDelay: `${i * 0.2}s`
+                            }}
+                        />
+                    ))}
                 </div>
+
+                {/* Main Content */}
+                <div className="relative z-10 h-full flex flex-col p-8">
+                    {/* Header Icon with Animation */}
+                    <div className="flex justify-center mb-6">
+                        <div className={`
+                            relative p-4 rounded-full transition-all duration-500
+                            ${isHovered ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 scale-110' : 'bg-white/10'}
+                        `}>
+                            <Plane 
+                                className={`
+                                    w-12 h-12 text-white transition-all duration-700
+                                    ${isHovered ? 'rotate-12 text-blue-300' : 'rotate-0'}
+                                `}
+                            />
+                            {/* Plane Trail Effect */}
+                            <div className={`
+                                absolute top-1/2 -left-8 w-16 h-0.5 bg-gradient-to-r from-transparent to-blue-400/50
+                                transition-all duration-1000 transform -translate-y-1/2
+                                ${isHovered ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}
+                            `} />
+                        </div>
+                    </div>
+
+                    {/* Title with Gradient Text */}
+                    <h3 className={`
+                        text-3xl font-bold text-center mb-4 transition-all duration-500
+                        bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent
+                        ${isHovered ? 'scale-105' : 'scale-100'}
+                    `}>
+                        Travel Smarter
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-gray-300 text-center text-lg leading-relaxed mb-8 transition-all duration-500">
+                        Exchange seats, connect with fellow passengers, and make your journey 
+                        <span className="text-blue-300 font-medium"> extraordinary</span>.
+                    </p>
+
+                    {/* Feature Icons */}
+                    <div className="flex justify-center space-x-8 mb-8">
+                        {[
+                            { icon: MapPin, label: 'Destinations', delay: '0ms' },
+                            { icon: Users, label: 'Community', delay: '200ms' },
+                            { icon: Star, label: 'Premium', delay: '400ms' }
+                        ].map(({ icon: Icon, label, delay }) => (
+                            <div 
+                                key={label}
+                                className={`
+                                    flex flex-col items-center space-y-2 transition-all duration-500
+                                    ${isHovered ? 'transform -translate-y-2' : ''}
+                                `}
+                                style={{ transitionDelay: delay }}
+                            >
+                                <div className="p-2 rounded-lg bg-white/10 backdrop-blur-sm">
+                                    <Icon className="w-5 h-5 text-white/80" />
+                                </div>
+                                <span className="text-xs text-gray-400">{label}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Animated World Path */}
+                    <div className="flex-1 flex items-center justify-center">
+                        <div className="w-full h-32 relative">
+                            <svg width="100%" height="100%" viewBox="0 0 320 100" className="overflow-visible">
+                                <defs>
+                                    <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)" />
+                                        <stop offset="50%" stopColor="rgba(168, 85, 247, 0.8)" />
+                                        <stop offset="100%" stopColor="rgba(236, 72, 153, 0.8)" />
+                                    </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                                        <feMerge> 
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                
+                                {/* World Path */}
+                                <path
+                                    d="M10,60 Q80,20 160,50 T310,40"
+                                    fill="none"
+                                    stroke="url(#pathGradient)"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    filter="url(#glow)"
+                                    className={`
+                                        transition-all duration-1000
+                                        ${isHovered ? 'opacity-100' : 'opacity-70'}
+                                    `}
+                                    style={{
+                                        strokeDasharray: '500',
+                                        strokeDashoffset: isHovered ? '0' : '500',
+                                    }}
+                                />
+                                
+                                {/* Animated Plane on Path */}
+                                <g className={`
+                                    transition-all duration-3000 ease-in-out
+                                    ${animationState >= 2 ? 'opacity-100' : 'opacity-0'}
+                                `}>
+                                    <circle
+                                        cx={50 + (animationState * 70)}
+                                        cy={50 - Math.sin((animationState * 70) / 50) * 15}
+                                        r="3"
+                                        fill="white"
+                                        className="animate-pulse"
+                                    />
+                                    <Plane 
+                                        className="w-4 h-4 text-white"
+                                        style={{
+                                            transform: `translate(${45 + (animationState * 70)}px, ${45 - Math.sin((animationState * 70) / 50) * 15}px)`,
+                                        }}
+                                    />
+                                </g>
+                                
+                                {/* Destination Markers */}
+                                {[30, 120, 200, 290].map((x, i) => (
+                                    <circle
+                                        key={i}
+                                        cx={x}
+                                        cy={55 - Math.sin(x / 50) * 15}
+                                        r="2"
+                                        fill="rgba(255, 255, 255, 0.6)"
+                                        className={`
+                                            transition-all duration-500
+                                            ${isHovered ? 'animate-ping' : ''}
+                                        `}
+                                        style={{ animationDelay: `${i * 200}ms` }}
+                                    />
+                                ))}
+                            </svg>
+                        </div>
+                    </div>
+
+                    {/* Call to Action Button */}
+                    <div className="flex justify-center">
+                        <button className={`
+                            px-8 py-3 rounded-full font-medium text-white
+                            bg-gradient-to-r from-blue-600 to-purple-600
+                            hover:from-blue-500 hover:to-purple-500
+                            transform transition-all duration-300 ease-out
+                            ${isHovered ? 'scale-105 shadow-lg shadow-purple-500/25' : 'scale-100'}
+                            backdrop-blur-sm border border-white/10
+                        `}>
+                            Start Your Journey
+                        </button>
+                    </div>
+                </div>
+
+                {/* Subtle Border Glow */}
+                <div className={`
+                    absolute inset-0 rounded-3xl transition-opacity duration-500
+                    ${isHovered ? 'opacity-100' : 'opacity-0'}
+                `} 
+                style={{
+                    background: 'linear-gradient(135deg, transparent 0%, rgba(99, 102, 241, 0.1) 25%, rgba(168, 85, 247, 0.1) 50%, rgba(236, 72, 153, 0.1) 75%, transparent 100%)',
+                    padding: '1px',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'subtract'
+                }} />
             </div>
         </div>
     );
-};
+}
