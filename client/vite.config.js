@@ -1,15 +1,27 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    include: ['lucide-react'], // Pre-bundle lucide-react to avoid Rollup treating it as external
-  },
   build: {
     rollupOptions: {
-      // Add any modules that Rollup thinks are Node-only
-      external: [],
-    },
-  },
+      // This tells Vite's bundler (Rollup) to treat these Node.js modules
+      // as "external". This means it won't try to bundle them for the browser,
+      // which is what causes the build to fail.
+      external: [
+        'fs',
+        'path',
+        'os',
+        'crypto',
+        'stream',
+        'http',
+        'https',
+        'net',
+        'tls',
+        'zlib',
+        'url'
+      ]
+    }
+  }
 });
