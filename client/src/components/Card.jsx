@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function TravelCard() {
+export default function AestheticCard() {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
