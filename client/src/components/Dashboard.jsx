@@ -6,6 +6,7 @@ import React, { useState, useRef } from 'react';
 import { Header } from './Header';
 import { TicketDetails } from './TicketDetails';
 import { Exchange } from './Exchange';
+import { AestheticCard } from './Card'; 
 
 export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData, processPDF, isLoading, error }) => {
     const [showManualEntry, setShowManualEntry] = useState(false);
@@ -17,7 +18,9 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
     };
 
     return (
-        <div id="app-container" style={{ display: 'block' }}>
+        <div className="dashboard-layout">
+            <AestheticCard />
+        <div id="app-container" className="main-content" style={{ display: 'block' }}>
             <Header userName={user.name} handleLogout={handleLogout} token={token} onUseTicket={setTicketData} />
             <div className="header">
                 <h2>🚂 Yatri-Bandhu</h2>
@@ -56,6 +59,8 @@ export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData
                     token={token} 
                 />
             )}
+        </div>
+            <AestheticCard />
         </div>
     );
 };
