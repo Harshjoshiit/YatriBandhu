@@ -553,3 +553,74 @@ body {
         margin-right: 1rem;
     }
 }
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 1fr; /* Default for mobile: single column */
+    gap: 32px;
+    align-items: start;
+    width: 100%;
+    max-width: 1400px; /* Limit the max width on very large screens */
+    margin: 0 auto;
+}
+
+.main-content {
+    /* This class will be for your existing app container */
+    width: 100%;
+}
+
+.aesthetic-card {
+    display: none; /* Hide the decorative cards on mobile and tablets */
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    animation: fadeIn 0.8s ease-out forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aesthetic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aesthetic-card .card-icon {
+    margin-bottom: 24px;
+    color: var(--primary-blue);
+}
+
+.aesthetic-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.aesthetic-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Media query to show the cards on larger screens (laptops/desktops) */
+@media (min-width: 1200px) {
+    .dashboard-layout {
+        /* Creates a 3-column grid, with the main content in the center */
+        grid-template-columns: 1fr 500px 1fr;
+    }
+    .aesthetic-card {
+        display: block; /* Show the card on desktop */
+    }
+}
+
