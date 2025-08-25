@@ -50,7 +50,7 @@ body {
 .dashboard-layout {
     display: grid;
     grid-template-columns: 1fr; /* Default for mobile */
-    gap: 2rem;
+    gap: 4rem;
     align-items: start;
     width: 100%;
     max-width: 1400px;
