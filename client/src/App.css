@@ -308,8 +308,8 @@ body {
     text-align: center;
     border-top: 1px solid var(--border-color);
     margin-top: 2rem; /* Add some space above the footer */
-    color:white;
     background-color : grey;
+    color:white;
 }
 
 .dashboard-footer p {
