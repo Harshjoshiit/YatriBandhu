@@ -31,7 +31,7 @@ export const Signup = ({ onLogin }) => {
     return (
         <div className="auth-container">
             <div className="header">
-                <h2 id="auth-title">Sign Up for TravelBuddy</h2>
+                <h2 id="auth-title">Sign Up for YatriBandhu</h2>
             </div>
             <form onSubmit={handleSubmit} id="signup-form" className="auth-form">
                 <input 
