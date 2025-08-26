@@ -10,7 +10,7 @@ import AestheticCard from './Card';
 import AIAssist from './AIAssist'; 
 
 export const Dashboard = ({ user, token, handleLogout, ticketData, setTicketData, processPDF, isLoading, error }) => {
-    const [showManualEntry, setShowManualEntry] = useState(false);
+    const [showManualEntry, setShowManualEntry] = useState(false); 
     const fileInputRef = useRef(null);
 
     // This function will be passed to TicketDetails to update the state here
