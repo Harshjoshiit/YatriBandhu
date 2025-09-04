@@ -326,13 +326,13 @@ body {
 }
 
 .footer-links a {
-    color: var(--text-light);
+    color: white;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .footer-links a:hover {
-    color: var(--primary-blue);
+    color: orange;
     text-decoration: underline;
 }
 
