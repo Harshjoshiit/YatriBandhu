@@ -49,11 +49,11 @@ npm install
 
 ## Run Client and Server
 
-# Run frontend  
+### Run frontend  
 cd client  
 npm run dev  
 
-# Run backend  
+### Run backend  
 cd ../server  
 npm start  
 
