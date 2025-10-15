@@ -76,7 +76,7 @@ YatriBandhu/
 └── package.json
 
 # Clone the repository
-git clone https://github.com/<Harshjoshiit>/YatriBandhu.git
+git clone https://github.com/Harshjoshiit/YatriBandhu.git
 
 # Install dependencies
 cd client && npm install
