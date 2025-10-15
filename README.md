@@ -36,16 +36,15 @@ Live Demo: http://yatri-bandhu.vercel.app
 ## Clone the repository
 git clone https://github.com/Harshjoshiit/YatriBandhu.git
 
-## Install dependencies
+---
+## Install Dependencies
+
 cd client
 npm install
 cd ../server
 npm install
 
-## Run client and server
-cd client
-npm run dev
+---
 
-cd ../server
-npm start
+
 
