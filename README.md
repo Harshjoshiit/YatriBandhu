@@ -54,7 +54,7 @@ YatriBandhu/
 ├── server/
 │   ├── config/
 │   │   └── db.js
-│   ├── controllers/
+│   ├── controllers/ 
 │   │   ├── authController.js
 │   │   ├── chatController.js
 │   │   └── ticketController.js
