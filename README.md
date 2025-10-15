@@ -33,7 +33,6 @@ Live Demo: http://yatri-bandhu.vercel.app
 **Utilities:** Groq API (PDF parsing), Email.js (notifications)
 
 ---
-
 # Clone the repository
 git clone https://github.com/<your-username>/YatriBandhu.git
 
