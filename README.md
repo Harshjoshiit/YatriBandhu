@@ -39,10 +39,10 @@ git clone https://github.com/Harshjoshiit/YatriBandhu.git
 ---
 ## Install Dependencies
 
-cd client
-npm install
-cd ../server
-npm install
+cd client  
+npm install  
+cd ../server  
+npm install  
 
 ---
 
