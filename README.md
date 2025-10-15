@@ -37,9 +37,16 @@ Live Demo: http://yatri-bandhu.vercel.app
 git clone https://github.com/Harshjoshiit/YatriBandhu.git
 
 ## Install dependencies
-cd client && npm install
-cd ../server && npm install
+cd client
+npm install
+cd ../server
+npm install
 
 ## Run client and server
-npm run dev   # in client
-npm start     # in server
+# Run frontend
+cd client
+npm run dev
+# Run backend
+cd ../server
+npm start
+
