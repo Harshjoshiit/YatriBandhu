@@ -34,45 +34,6 @@ Live Demo: http://yatri-bandhu.vercel.app
 
 ---
 
-YatriBandhu/
-│
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Auth/
-│   │   │   ├── Chat/
-│   │   │   ├── Dashboard/
-│   │   │   └── Shared/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── vite.config.js
-│
-├── server/
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── chatController.js
-│   │   └── ticketController.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Ticket.js
-│   │   └── Chat.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── chatRoutes.js
-│   │   └── ticketRoutes.js
-│   ├── socket/
-│   │   └── index.js
-│   ├── server.js
-│   └── package.json
-│
-├── .env
-├── README.md
-└── package.json
-
 # Clone the repository
 git clone https://github.com/<your-username>/YatriBandhu.git
 
