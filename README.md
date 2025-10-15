@@ -34,8 +34,6 @@ Live Demo: http://yatri-bandhu.vercel.app
 
 ---
 
-## 🧩 Folder Structure
-
 YatriBandhu/
 │
 ├── client/
@@ -54,7 +52,7 @@ YatriBandhu/
 ├── server/
 │   ├── config/
 │   │   └── db.js
-│   ├── controllers/ 
+│   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── chatController.js
 │   │   └── ticketController.js
@@ -76,7 +74,7 @@ YatriBandhu/
 └── package.json
 
 # Clone the repository
-git clone https://github.com/Harshjoshiit/YatriBandhu.git
+git clone https://github.com/<your-username>/YatriBandhu.git
 
 # Install dependencies
 cd client && npm install
