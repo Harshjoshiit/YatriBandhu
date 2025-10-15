@@ -33,13 +33,13 @@ Live Demo: http://yatri-bandhu.vercel.app
 **Utilities:** Groq API (PDF parsing), Email.js (notifications)
 
 ---
-# Clone the repository
-git clone https://github.com/<your-username>/YatriBandhu.git
+## Clone the repository
+git clone https://github.com/Harshjoshiit/YatriBandhu.git
 
-# Install dependencies
+## Install dependencies
 cd client && npm install
 cd ../server && npm install
 
-# Run client and server
+## Run client and server
 npm run dev   # in client
 npm start     # in server
