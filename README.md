@@ -5,7 +5,8 @@ It enables travelers to upload their ticket PDFs or manually enter details, find
 
 ---
 
-Live Demo: http://yatri-bandhu.vercel.app
+Live Demo: http://yatri-bandhu.vercel.app  
+Note: There is a brief render delay of approximately 30 seconds after logging in following a long period of inactivity because the server on the free-tier plan sleeps and needs time to wake up and load resources.
 
 ## 🚀 Features
 
