@@ -16,7 +16,7 @@ Note: There may be an initial render delay of approximately 30 seconds due to th
 - **Real-Time Chat** – Live communication using Socket.IO with:
   - Typing indicator  
   - Block/unblock functionality  
-- **Email Notifications** – Email alerts (via Email.js) when a new message is received  
+- **Email Notifications** – Email alerts (via EmailJS) when a new message is received  
 - **Dashboard** – View ticket history, notifications, and chat requests  
 - **Modern UI/UX** – Built with React + Tailwind CSS  
 - **Deployment** –  
