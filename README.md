@@ -31,7 +31,7 @@ Note: There may be an initial render delay of approximately 30 seconds due to th
 **Frontend:** React.js, React Router, Tailwind CSS  
 **Backend:** Node.js, Express.js, Socket.IO  
 **Database:** MongoDB  
-**Utilities:** Groq API (PDF parsing), Email.js (notifications)
+**Utilities:** Groq API (PDF parsing), EmailJS (notifications)
 
 ---
 ## Clone the repository
