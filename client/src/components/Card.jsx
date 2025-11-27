@@ -1,14 +1,9 @@
 import React from 'react';
 
-// This is the final, redesigned AestheticCard component.
-// It fixes all overflow issues and uses a lighter, beige theme.
 const AestheticCard = () => {
   return (
     <>
-      {/* We inject a <style> tag here to keep the component self-contained.
-        This is a clean way to handle complex styles like animations and gradients 
-        without needing a separate CSS file.
-      */}
+      {}
       <style>{`
         .aesthetic-card-container {
           width: 100%;
